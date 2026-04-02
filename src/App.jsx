@@ -29,11 +29,10 @@ function resolveTheme(mode) {
 }
 
 function getInitialThemeMode() {
-  if (typeof window === "undefined") return "auto";
+  if (typeof window === "undefined") return "light";
   const saved = localStorage.getItem(THEME_STORAGE_KEY);
-  return saved === "light" || saved === "dark" || saved === "auto"
-    ? saved
-    : "auto";
+  if (saved === "light" || saved === "dark") return saved;
+  return "light";
 }
 
 function getInitialAuthUser() {
