@@ -29,26 +29,26 @@ html[data-theme="dark"] {
 }
 
 html[data-theme="light"] {
-  --bg-deep: #f2f2f2;
-  --bg-card: #f2f2f2;
-  --bg-panel: #91b6cb;
+  --bg-deep: #ffffff;
+  --bg-card: #ffffff;
+  --bg-panel: #f1f6fb;
   --bg-gradient-top: #8dc1df;
   --bg-gradient-bot: #6645ac;
-  --border: #c3c3c3;
-  --border-glow: #8dc1df55;
+  --border: #e9f2fb;
+  --border-glow: #8dc1df33;
 
-  --accent-blue: #0d2443;
+  --accent-blue: #27466f;
   --accent-cyan: #91b6cb;
-  --accent-green: #0d2443;
-  --accent-red: #c3c3c3;
-  --accent-orange: #c3c3c3;
+  --accent-green: #91b6cb; /* mapped to cyan/blue */
+  --accent-red: #6645ac;   /* mapped to purple */
+  --accent-orange: #6645ac; /* mapped to purple */
   --accent-purple: #6645ac;
-  --accent-violet: #6645ac;
-  --accent-brown: #0d2443;
+  --accent-violet: #8b5cf6;
+  --accent-brown: #27466f; /* mapped to dark blue */
 
   --text-primary: #0d2443;
-  --text-secondary: #91b6cb;
-  --text-muted: #c3c3c3;
+  --text-secondary: #27466f;
+  --text-muted: #6b7280;
   color-scheme: light;
 }
 
@@ -303,16 +303,16 @@ body::before {
   background: linear-gradient(90deg, #0d2443, #91b6cb);
 }
 .metric-card.green::before {
-  background: linear-gradient(90deg, #4caf82, #2e8b5a);
+  background: linear-gradient(90deg, #27466f, #91b6cb);
 }
 .metric-card.red::before {
-  background: linear-gradient(90deg, #e05c6e, #d4875a);
+  background: linear-gradient(90deg, #6645ac, #8b5cf6);
 }
 .metric-card.purple::before {
-  background: linear-gradient(90deg, #8dc1df, #6645ac);
+  background: linear-gradient(90deg, #8dc1df, #8dc1df, #6645ac);
 }
 .metric-card.orange::before {
-  background: linear-gradient(90deg, #d4875a, #c9a040);
+  background: linear-gradient(90deg, #6645ac, #8b5cf6);
 }
 
 .metric-label {
@@ -559,9 +559,9 @@ body::before {
   font-family: var(--font-mono);
 }
 .tag-green {
-  background: #4caf8218;
-  color: #4caf82;
-  border: 1px solid #4caf8233;
+  background: #91b6cb18;
+  color: #91b6cb;
+  border: 1px solid #91b6cb33;
 }
 .tag-orange {
   background: #d4875a18;
@@ -569,9 +569,9 @@ body::before {
   border: 1px solid #d4875a33;
 }
 .tag-red {
-  background: #e05c6e18;
-  color: #e05c6e;
-  border: 1px solid #e05c6e33;
+  background: #6645ac18;
+  color: #6645ac;
+  border: 1px solid #6645ac33;
 }
 .tag-blue {
   background: #4a7fa018;
