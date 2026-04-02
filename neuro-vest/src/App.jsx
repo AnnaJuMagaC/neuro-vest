@@ -3,7 +3,14 @@ import Sidebar from './components/Sidebar';
 import Dashboard from './pages/Dashboard';
 import CardioPage from './pages/CardioPage';
 import NeuralPage from './pages/NeuralPage';
-import { RiscoPage, HistoricoPage, DispositivosPage, PacientePage } from './pages/OtherPages';
+import {
+  RiscoPage,
+  HistoricoPage,
+  DispositivosPage,
+  PacientePage,
+  ContatosPage,
+  IAsuportePage,
+} from './pages/OtherPages';
 import { getPatient } from './api';
 
 const PAGE_TITLES = {
@@ -14,6 +21,8 @@ const PAGE_TITLES = {
   historico: { title: 'Histórico de Sessões', subtitle: 'Registros e exportação' },
   dispositivos: { title: 'Gerenciar Dispositivos', subtitle: 'Status e controle de atuadores' },
   paciente: { title: 'Dados do Paciente', subtitle: 'Ficha clínica e condições' },
+  contatos: { title: 'Contatos', subtitle: 'Chat com psicólogo, médico e fisioterapeuta' },
+  suporte: { title: 'IA de Suporte', subtitle: 'Apoio emocional inicial, sem substituir profissionais' },
 };
 
 export default function App() {
@@ -40,6 +49,8 @@ export default function App() {
       case 'historico': return <HistoricoPage />;
       case 'dispositivos': return <DispositivosPage />;
       case 'paciente': return <PacientePage patient={patient} />;
+      case 'contatos': return <ContatosPage patient={patient} />;
+      case 'suporte': return <IAsuportePage />;
       default: return <Dashboard patient={patient} />;
     }
   };
