@@ -1,6 +1,7 @@
 // ===== RISCO VASCULAR =====
 import React, { useMemo, useState } from 'react';
 import { RadialBarChart, RadialBar, ResponsiveContainer, PieChart, Pie, Cell, Tooltip } from 'recharts';
+import { fakeHistorico, fakeDevices, postComando } from '../api';
 
 function RiscoPage() {
   const fatores = [
@@ -116,8 +117,6 @@ function RiscoPage() {
 
 // ===== HISTÓRICO =====
 function HistoricoPage() {
-  const { fakeHistorico } = require('../api');
-
   const statusMap = { normal: { label: 'Normal', cls: 'tag-green' }, warning: { label: 'Atenção', cls: 'tag-orange' }, danger: { label: 'Crítico', cls: 'tag-red' } };
 
   return (
@@ -166,8 +165,6 @@ function HistoricoPage() {
 
 // ===== DISPOSITIVOS =====
 function DispositivosPage() {
-  const { fakeDevices, postComando } = require('../api');
-
   const resumo = [
     {
       label: 'Dispositivos ativos',
