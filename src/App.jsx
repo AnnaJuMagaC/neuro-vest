@@ -9,6 +9,8 @@ import {
   HistoricoPage,
   DispositivosPage,
   PacientePage,
+  ContatosPage,
+  IAsuportePage,
 } from "./pages/OtherPages";
 import { getPatient } from "./api";
 
@@ -73,6 +75,14 @@ const PAGE_TITLES = {
   paciente: {
     title: "Dados do Paciente",
     subtitle: "Ficha clínica e condições",
+  },
+  contatos: {
+    title: "Rede de Contatos",
+    subtitle: "Psicólogo, médico e fisioterapeuta",
+  },
+  suporte: {
+    title: "IA de Apoio",
+    subtitle: "Acolhimento conversacional com limite clínico",
   },
 };
 
@@ -181,6 +191,10 @@ export default function App() {
         return <DispositivosPage />;
       case "paciente":
         return <PacientePage patient={patient} />;
+      case "contatos":
+        return <ContatosPage patient={patient} />;
+      case "suporte":
+        return <IAsuportePage />;
       default:
         return <Dashboard patient={patient} />;
     }

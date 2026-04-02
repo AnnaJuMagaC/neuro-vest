@@ -8,6 +8,8 @@ const navItems = [
   { icon: "bi-clock-history", label: "Histórico", page: "historico" },
   { icon: "bi-cpu", label: "Dispositivos", page: "dispositivos" },
   { icon: "bi-person-lines-fill", label: "Paciente", page: "paciente" },
+  { icon: "bi-telephone-fill", label: "Contatos", page: "contatos" },
+  { icon: "bi-chat-dots-fill", label: "IA de Apoio", page: "suporte" },
 ];
 
 export default function Sidebar({
@@ -48,7 +50,22 @@ export default function Sidebar({
         ))}
 
         <div className="nav-section-label">Sistema</div>
-        {navItems.slice(4).map((item) => (
+        {navItems.slice(4, 7).map((item) => (
+          <div
+            key={item.page}
+            className={`nav-item ${currentPage === item.page ? "active" : ""}`}
+            onClick={() => {
+              setPage(item.page);
+              onClose();
+            }}
+          >
+            <i className={`bi ${item.icon}`}></i>
+            {item.label}
+          </div>
+        ))}
+
+        <div className="nav-section-label">Apoio</div>
+        {navItems.slice(7).map((item) => (
           <div
             key={item.page}
             className={`nav-item ${currentPage === item.page ? "active" : ""}`}

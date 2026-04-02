@@ -1,5 +1,5 @@
 // ===== RISCO VASCULAR =====
-import React from "react";
+import React, { useMemo, useState } from "react";
 import {
   RadialBarChart,
   RadialBar,
@@ -652,4 +652,383 @@ function PacientePage({ patient }) {
   );
 }
 
-export { RiscoPage, HistoricoPage, DispositivosPage, PacientePage };
+// ===== CONTATOS =====
+function ContatosPage({ patient }) {
+  const contatos = [
+    {
+      cargo: "Psicólogo(a)",
+      nome: "Dra. Marina Souza",
+      registro: "CRP 06/12345",
+      canal: "WhatsApp e videoconferência",
+      horario: "Seg a Sex · 08h às 18h",
+      prioridade: "Apoio emocional e acolhimento",
+      icone: "bi-chat-heart-fill",
+      cor: "var(--accent-violet)",
+      contato: "(11) 99999-1200",
+      email: "marina.souza@neurovest.saude",
+    },
+    {
+      cargo: "Médico(a)",
+      nome: "Dra. Ana Paula Ferreira",
+      registro: "CRM 12.345-SP",
+      canal: "Telefone direto e prontuário integrado",
+      horario: "Seg a Sex · 09h às 19h",
+      prioridade: "Avaliação clínica e conduta médica",
+      icone: "bi-heart-pulse-fill",
+      cor: "var(--accent-orange)",
+      contato: "(11) 98888-2211",
+      email: "ana.ferreira@neurovest.saude",
+    },
+    {
+      cargo: "Fisioterapeuta",
+      nome: "Dr. Rafael Lima",
+      registro: "CREFITO 3/456789-F",
+      canal: "Agenda de exercícios e mensagens",
+      horario: "Seg a Sáb · 07h às 17h",
+      prioridade: "Mobilidade, respiração e reabilitação",
+      icone: "bi-person-walking",
+      cor: "var(--accent-green)",
+      contato: "(11) 97777-3300",
+      email: "rafael.lima@neurovest.saude",
+    },
+  ];
+
+  return (
+    <div>
+      <div className="card-dark mb-4">
+        <div className="d-flex flex-column flex-md-row gap-3 justify-content-between">
+          <div>
+            <div className="section-header mb-2">Rede de apoio do paciente</div>
+            <div style={{ fontSize: 14, color: "var(--text-secondary)" }}>
+              Contatos diretos para acolhimento emocional, avaliação clínica e
+              acompanhamento de reabilitação.
+            </div>
+          </div>
+          <div
+            className="tag tag-blue"
+            style={{ alignSelf: "flex-start", lineHeight: 1.5 }}
+          >
+            Paciente: {patient?.nome || "Não identificado"}
+          </div>
+        </div>
+      </div>
+
+      <div className="row g-4 mb-4">
+        {contatos.map((contato) => (
+          <div className="col-12 col-lg-4" key={contato.cargo}>
+            <div
+              className="card-dark h-100"
+              style={{ borderTop: `3px solid ${contato.cor}` }}
+            >
+              <div className="d-flex align-items-start gap-3 mb-3">
+                <div
+                  style={{
+                    width: 46,
+                    height: 46,
+                    borderRadius: 12,
+                    background: `linear-gradient(135deg, ${contato.cor}44, ${contato.cor}18)`,
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    color: contato.cor,
+                    fontSize: 20,
+                    flex: "0 0 auto",
+                  }}
+                >
+                  <i className={`bi ${contato.icone}`}></i>
+                </div>
+                <div>
+                  <div style={{ fontSize: 17, fontWeight: 700 }}>
+                    {contato.cargo}
+                  </div>
+                  <div style={{ color: "var(--text-secondary)", fontSize: 13 }}>
+                    {contato.nome}
+                  </div>
+                  <div
+                    style={{
+                      color: "var(--text-muted)",
+                      fontSize: 11,
+                      fontFamily: "var(--font-mono)",
+                      marginTop: 3,
+                    }}
+                  >
+                    {contato.registro}
+                  </div>
+                </div>
+              </div>
+
+              <div className="d-flex flex-column gap-2">
+                <div className="d-flex align-items-center gap-2">
+                  <i
+                    className="bi bi-clock-history"
+                    style={{ color: contato.cor }}
+                  ></i>
+                  <span style={{ fontSize: 13, color: "var(--text-secondary)" }}>
+                    {contato.horario}
+                  </span>
+                </div>
+                <div className="d-flex align-items-center gap-2">
+                  <i
+                    className="bi bi-telephone-fill"
+                    style={{ color: contato.cor }}
+                  ></i>
+                  <span style={{ fontSize: 13, color: "var(--text-secondary)" }}>
+                    {contato.contato}
+                  </span>
+                </div>
+                <div className="d-flex align-items-center gap-2">
+                  <i
+                    className="bi bi-envelope-fill"
+                    style={{ color: contato.cor }}
+                  ></i>
+                  <span style={{ fontSize: 13, color: "var(--text-secondary)" }}>
+                    {contato.email}
+                  </span>
+                </div>
+              </div>
+
+              <div className="mt-3" style={{ fontSize: 13, color: "var(--text-primary)" }}>
+                {contato.prioridade}
+              </div>
+
+              <div className="mt-3 d-flex flex-wrap gap-2">
+                <span className="tag tag-blue">{contato.canal}</span>
+                <span className="tag tag-green">Resposta rápida</span>
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+
+      <div className="card-dark">
+        <div className="section-header">Como usar a rede de contatos</div>
+        <div className="row g-3">
+          {[
+            "Use o psicólogo para apoio emocional, escuta e organização do cuidado.",
+            "Acione o médico para sintomas novos, piora clínica ou ajuste de conduta.",
+            "Fale com o fisioterapeuta para dor, mobilidade, respiração e exercícios.",
+          ].map((item) => (
+            <div className="col-12 col-md-4" key={item}>
+              <div
+                style={{
+                  background: "var(--bg-panel)",
+                  border: "1px solid var(--border)",
+                  borderRadius: 10,
+                  padding: 14,
+                  height: "100%",
+                  color: "var(--text-secondary)",
+                  fontSize: 13,
+                }}
+              >
+                {item}
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function getAssistantReply(message) {
+  const texto = message.toLowerCase();
+
+  if (
+    texto.includes("muito mal") ||
+    texto.includes("não estou bem") ||
+    texto.includes("n estou bem") ||
+    texto.includes("triste")
+  ) {
+    return "Sinto muito que você esteja passando por isso. Tente respirar devagar por 4 segundos, soltar por 6 e, se puder, fale com alguém de confiança agora. Se os sintomas estiverem fortes ou você sentir risco imediato, procure um profissional de saúde ou emergência.";
+  }
+
+  if (
+    texto.includes("ansioso") ||
+    texto.includes("ansiedade") ||
+    texto.includes("nervoso")
+  ) {
+    return "Vamos desacelerar juntos: inspire pelo nariz, segure 2 segundos e solte lentamente. Depois, nomeie 3 coisas que você vê ao redor. Se quiser, eu também posso te ajudar a organizar o que está te deixando assim para levar ao psicólogo.";
+  }
+
+  if (
+    texto.includes("sozinho") ||
+    texto.includes("isolado") ||
+    texto.includes("desamparado")
+  ) {
+    return "Você não precisa lidar com isso sozinho. Tente mandar uma mensagem para alguém de confiança e, se preferir, posso ajudar a montar uma frase curta para pedir apoio agora.";
+  }
+
+  if (
+    texto.includes("dor") ||
+    texto.includes("cansado") ||
+    texto.includes("fraqueza") ||
+    texto.includes("tontura")
+  ) {
+    return "Se houver dor forte, fraqueza súbita, falta de ar ou piora importante, procure atendimento presencial. Posso também te ajudar a registrar os sintomas para falar com o médico ou fisioterapeuta.";
+  }
+
+  if (
+    texto.includes("suic") ||
+    texto.includes("me machucar") ||
+    texto.includes("morrer") ||
+    texto.includes("acabar com tudo")
+  ) {
+    return "Isso é sério e eu quero te orientar a buscar ajuda humana imediata. Se houver risco agora, ligue para a emergência local ou procure um serviço de urgência e avise alguém de confiança imediatamente. Se quiser, responda apenas com 'preciso de ajuda' e eu vou continuar com passos curtos de apoio.";
+  }
+
+  return "Estou aqui para te ouvir e te ajudar a organizar o que você sente. Me conte um pouco do que está acontecendo, e eu posso sugerir um próximo passo de apoio ou encaminhamento para psicólogo, médico ou fisioterapeuta.";
+}
+
+// ===== IA DE APOIO =====
+function IAsuportePage() {
+  const [mensagem, setMensagem] = useState("");
+  const [chat, setChat] = useState([
+    {
+      id: 1,
+      sender: "ia",
+      text: "Olá, eu sou a IA de apoio do NeuroVest. Posso ouvir o que você está sentindo e ajudar com orientação inicial, mas não substituo um profissional de saúde.",
+    },
+    {
+      id: 2,
+      sender: "ia",
+      text: "Se quiser, escreva algo como 'n estou muito bem' e eu vou te responder de forma acolhedora.",
+    },
+  ]);
+
+  const atalhos = useMemo(
+    () => [
+      "n estou muito bem",
+      "estou ansioso",
+      "me sinto sozinho",
+      "preciso falar com alguém",
+    ],
+    [],
+  );
+
+  const enviarMensagem = (texto) => {
+    const conteudo = texto.trim();
+    if (!conteudo) return;
+
+    const novaMensagem = { id: Date.now(), sender: "user", text: conteudo };
+    const resposta = {
+      id: Date.now() + 1,
+      sender: "ia",
+      text: getAssistantReply(conteudo),
+    };
+
+    setChat((prev) => [...prev, novaMensagem, resposta]);
+    setMensagem("");
+  };
+
+  return (
+    <div>
+      <div className="card-dark mb-4">
+        <div className="d-flex flex-column flex-md-row gap-3 justify-content-between align-items-md-center">
+          <div>
+            <div className="section-header mb-2">IA de apoio emocional</div>
+            <div style={{ fontSize: 14, color: "var(--text-secondary)" }}>
+              Um espaço para conversar quando você precisar de acolhimento,
+              orientação inicial e organização do próximo passo.
+            </div>
+          </div>
+          <div className="tag tag-orange" style={{ alignSelf: "flex-start" }}>
+            Não substitui psicólogo, médico ou serviço de urgência
+          </div>
+        </div>
+      </div>
+
+      <div className="row g-4">
+        <div className="col-12 col-lg-8">
+          <div className="card-dark h-100">
+            <div className="section-header">Conversa guiada</div>
+            <div className="support-chat-window">
+              {chat.map((item) => (
+                <div
+                  key={item.id}
+                  className={`support-chat-row ${item.sender === "user" ? "user" : "ia"}`}
+                >
+                  <div className={`support-chat-bubble ${item.sender}`}>
+                    {item.text}
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            <div className="support-quick-actions mt-3">
+              {atalhos.map((atalho) => (
+                <button
+                  key={atalho}
+                  type="button"
+                  className="support-quick-btn"
+                  onClick={() => enviarMensagem(atalho)}
+                >
+                  {atalho}
+                </button>
+              ))}
+            </div>
+
+            <div className="support-input-row mt-3">
+              <input
+                type="text"
+                className="support-input"
+                placeholder="Escreva como você está se sentindo..."
+                value={mensagem}
+                onChange={(e) => setMensagem(e.target.value)}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter") {
+                    enviarMensagem(mensagem);
+                  }
+                }}
+              />
+              <button
+                type="button"
+                className="btn-neuro"
+                onClick={() => enviarMensagem(mensagem)}
+              >
+                Enviar
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div className="col-12 col-lg-4">
+          <div className="card-dark mb-4">
+            <div className="section-header">O que esta IA faz</div>
+            <div className="d-flex flex-column gap-3">
+              {[
+                "Escuta sua mensagem e responde com apoio inicial.",
+                "Ajuda a organizar sintomas, emoções e próximos passos.",
+                "Sugere contato com profissional quando necessário.",
+              ].map((item) => (
+                <div
+                  key={item}
+                  style={{
+                    background: "var(--bg-panel)",
+                    border: "1px solid var(--border)",
+                    borderRadius: 10,
+                    padding: 12,
+                    color: "var(--text-secondary)",
+                    fontSize: 13,
+                  }}
+                >
+                  {item}
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <div className="card-dark">
+            <div className="section-header">Limites importantes</div>
+            <div style={{ fontSize: 13, color: "var(--text-secondary)" }}>
+              Esta IA não faz diagnóstico, não prescreve tratamento e não deve
+              ser usada em situações de emergência. Se houver risco imediato ou
+              piora importante, procure atendimento humano sem demora.
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+export { RiscoPage, HistoricoPage, DispositivosPage, PacientePage, ContatosPage, IAsuportePage };
