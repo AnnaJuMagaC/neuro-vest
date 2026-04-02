@@ -168,6 +168,38 @@ function HistoricoPage() {
 function DispositivosPage() {
   const { fakeDevices, postComando } = require('../api');
 
+  const resumo = [
+    {
+      label: 'Dispositivos ativos',
+      value: fakeDevices.length,
+      icon: 'bi-cpu-fill',
+      color: 'var(--accent-green)',
+      note: 'Todos respondendo ao painel',
+    },
+    {
+      label: 'Bateria média',
+      value:
+        Math.round(
+          fakeDevices.reduce((acc, device) => acc + device.bateria, 0) /
+            fakeDevices.length,
+        ) + '%',
+      icon: 'bi-battery-half',
+      color: 'var(--accent-cyan)',
+      note: 'Boa autonomia operacional',
+    },
+    {
+      label: 'Sinal médio',
+      value:
+        Math.round(
+          fakeDevices.reduce((acc, device) => acc + device.sinal, 0) /
+            fakeDevices.length,
+        ) + '%',
+      icon: 'bi-wifi',
+      color: 'var(--accent-orange)',
+      note: 'Conexão estável na simulação',
+    },
+  ];
+
   const handleComando = async (id, cmd) => {
     await postComando(id, cmd);
     alert(`Comando "${cmd}" enviado para ${id}`);
@@ -175,16 +207,90 @@ function DispositivosPage() {
 
   return (
     <div>
+      <div className="row g-3 mb-4">
+        {resumo.map((item) => (
+          <div className="col-12 col-md-4" key={item.label}>
+            <div className="card-dark h-100">
+              <div className="d-flex align-items-start justify-content-between gap-3">
+                <div>
+                  <div className="metric-label">{item.label}</div>
+                  <div
+                    style={{
+                      fontSize: 30,
+                      lineHeight: 1,
+                      fontFamily: 'var(--font-mono)',
+                      fontWeight: 700,
+                      color: item.color,
+                    }}
+                  >
+                    {item.value}
+                  </div>
+                  <div
+                    style={{
+                      marginTop: 8,
+                      fontSize: 12,
+                      color: 'var(--text-secondary)',
+                    }}
+                  >
+                    {item.note}
+                  </div>
+                </div>
+                <div
+                  style={{
+                    width: 42,
+                    height: 42,
+                    borderRadius: 12,
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    background: `linear-gradient(135deg, ${item.color}33, ${item.color}14)`,
+                    color: item.color,
+                    fontSize: 20,
+                    flex: '0 0 auto',
+                  }}
+                >
+                  <i className={`bi ${item.icon}`}></i>
+                </div>
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+
       <div className="row g-4">
         {fakeDevices.map(d => (
           <div className="col-12 col-md-6" key={d.id}>
-            <div className="card-dark">
+            <div className="card-dark h-100">
               <div className="d-flex justify-content-between align-items-start mb-3">
                 <div>
-                  <div style={{ fontSize: 18, fontWeight: 700 }}>{d.nome}</div>
+                  <div className="section-header mb-2">{d.nome}</div>
                   <div style={{ fontSize: 11, fontFamily: 'var(--font-mono)', color: 'var(--text-muted)' }}>{d.id} · {d.tipo}</div>
                 </div>
                 <span className="tag tag-green"><span className="device-dot on me-1"></span>ATIVO</span>
+              </div>
+
+              <div className="row g-3 mb-3">
+                <div className="col-12 col-xl-4">
+                  <div style={{ background: 'var(--bg-panel)', borderRadius: 10, padding: 12, height: '100%' }}>
+                    <div className="metric-label">Status</div>
+                    <div style={{ fontSize: 14, color: 'var(--text-primary)' }}>Operando normalmente</div>
+                    <div style={{ fontSize: 11, color: 'var(--text-muted)', marginTop: 6 }}>Última sincronização há poucos segundos</div>
+                  </div>
+                </div>
+                <div className="col-6 col-xl-4">
+                  <div style={{ background: 'var(--bg-panel)', borderRadius: 10, padding: 12, height: '100%' }}>
+                    <div className="metric-label">Bateria</div>
+                    <div style={{ fontSize: 24, fontFamily: 'var(--font-mono)', color: d.bateria > 30 ? 'var(--accent-green)' : 'var(--accent-red)' }}>{d.bateria}%</div>
+                    <div className="risk-bar mt-1"><div className="risk-fill" style={{ width: `${d.bateria}%`, background: 'var(--accent-green)' }} /></div>
+                  </div>
+                </div>
+                <div className="col-6 col-xl-4">
+                  <div style={{ background: 'var(--bg-panel)', borderRadius: 10, padding: 12, height: '100%' }}>
+                    <div className="metric-label">Sinal</div>
+                    <div style={{ fontSize: 24, fontFamily: 'var(--font-mono)', color: 'var(--accent-cyan)' }}>{d.sinal}%</div>
+                    <div className="risk-bar mt-1"><div className="risk-fill" style={{ width: `${d.sinal}%`, background: 'var(--accent-cyan)' }} /></div>
+                  </div>
+                </div>
               </div>
 
               <div className="row g-2 mb-3">
