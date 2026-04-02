@@ -652,178 +652,185 @@ function PacientePage({ patient }) {
   );
 }
 
-// ===== CONTATOS =====
+function getRespostaProfissional(profissao, texto) {
+  const mensagem = texto.toLowerCase();
+
+  if (profissao === "Psicólogo(a)") {
+    if (mensagem.includes("ans") || mensagem.includes("nerv")) {
+      return "Entendo. Vamos fazer uma pausa curta: respire por 4 segundos, solte por 6 e repita 3 vezes. Depois me conte o que piorou hoje para eu te orientar melhor.";
+    }
+    if (
+      mensagem.includes("triste") ||
+      mensagem.includes("sozinho") ||
+      mensagem.includes("não estou bem") ||
+      mensagem.includes("n estou bem")
+    ) {
+      return "Obrigado por compartilhar isso. Você não está sozinho. Podemos organizar um plano para hoje com passos pequenos e também agendar um atendimento de acolhimento.";
+    }
+    return "Recebi sua mensagem. Vamos entender juntos o que você está sentindo agora para definir o melhor apoio.";
+  }
+
+  if (profissao === "Médico(a)") {
+    if (
+      mensagem.includes("dor") ||
+      mensagem.includes("falta de ar") ||
+      mensagem.includes("tontura")
+    ) {
+      return "Se houver dor intensa, falta de ar importante ou piora rápida, procure atendimento presencial imediato. Enquanto isso, descreva há quanto tempo começou e intensidade de 0 a 10.";
+    }
+    return "Mensagem recebida. Vou te orientar clinicamente com base nos sintomas relatados e, se necessário, ajustar a conduta da equipe.";
+  }
+
+  if (mensagem.includes("dor") || mensagem.includes("cans")) {
+    return "Vamos ajustar sua rotina com foco em conforto e recuperação. Me diga onde está a dor, intensidade e em que momento ela piora.";
+  }
+
+  return "Perfeito. Posso te orientar com exercícios leves e respiração para reduzir desconforto e melhorar mobilidade.";
+}
+
+// ===== CONTATOS (CHAT) =====
 function ContatosPage({ patient }) {
-  const contatos = [
+  const profissionais = [
     {
+      key: "psico",
       cargo: "Psicólogo(a)",
       nome: "Dra. Marina Souza",
       registro: "CRP 06/12345",
-      canal: "WhatsApp e videoconferência",
-      horario: "Seg a Sex · 08h às 18h",
-      prioridade: "Apoio emocional e acolhimento",
-      icone: "bi-chat-heart-fill",
+      status: "Online",
       cor: "var(--accent-violet)",
-      contato: "(11) 99999-1200",
-      email: "marina.souza@neurovest.saude",
+      abertura:
+        "Olá! Sou sua psicóloga de apoio. Pode me contar como você está hoje.",
     },
     {
+      key: "medico",
       cargo: "Médico(a)",
       nome: "Dra. Ana Paula Ferreira",
       registro: "CRM 12.345-SP",
-      canal: "Telefone direto e prontuário integrado",
-      horario: "Seg a Sex · 09h às 19h",
-      prioridade: "Avaliação clínica e conduta médica",
-      icone: "bi-heart-pulse-fill",
-      cor: "var(--accent-orange)",
-      contato: "(11) 98888-2211",
-      email: "ana.ferreira@neurovest.saude",
+      status: "Disponível",
+      cor: "var(--accent-purple)",
+      abertura:
+        "Olá, estou acompanhando seus dados clínicos. Quais sintomas você deseja relatar agora?",
     },
     {
+      key: "fisio",
       cargo: "Fisioterapeuta",
       nome: "Dr. Rafael Lima",
       registro: "CREFITO 3/456789-F",
-      canal: "Agenda de exercícios e mensagens",
-      horario: "Seg a Sáb · 07h às 17h",
-      prioridade: "Mobilidade, respiração e reabilitação",
-      icone: "bi-person-walking",
-      cor: "var(--accent-green)",
-      contato: "(11) 97777-3300",
-      email: "rafael.lima@neurovest.saude",
+      status: "Online",
+      cor: "var(--accent-blue)",
+      abertura:
+        "Vamos cuidar da sua mobilidade. Me diga como está dor, cansaço ou respiração hoje.",
     },
   ];
+
+  const [selecionado, setSelecionado] = useState(profissionais[0].key);
+  const [mensagem, setMensagem] = useState("");
+  const [conversas, setConversas] = useState(() => {
+    const base = {};
+    profissionais.forEach((p) => {
+      base[p.key] = [{ id: `${p.key}-1`, sender: "pro", text: p.abertura }];
+    });
+    return base;
+  });
+
+  const profissionalAtivo = profissionais.find((p) => p.key === selecionado);
+  const mensagens = conversas[selecionado] || [];
+
+  const enviarMensagem = (conteudo) => {
+    const texto = conteudo.trim();
+    if (!texto || !profissionalAtivo) return;
+
+    const idBase = Date.now();
+    const resposta = getRespostaProfissional(profissionalAtivo.cargo, texto);
+
+    setConversas((prev) => ({
+      ...prev,
+      [selecionado]: [
+        ...(prev[selecionado] || []),
+        { id: `${idBase}-u`, sender: "user", text: texto },
+        { id: `${idBase}-p`, sender: "pro", text: resposta },
+      ],
+    }));
+    setMensagem("");
+  };
 
   return (
     <div>
       <div className="card-dark mb-4">
-        <div className="d-flex flex-column flex-md-row gap-3 justify-content-between">
+        <div className="d-flex flex-column flex-md-row gap-3 justify-content-between align-items-md-center">
           <div>
-            <div className="section-header mb-2">Rede de apoio do paciente</div>
+            <div className="section-header mb-2">Contatos por chat</div>
             <div style={{ fontSize: 14, color: "var(--text-secondary)" }}>
-              Contatos diretos para acolhimento emocional, avaliação clínica e
-              acompanhamento de reabilitação.
+              Converse diretamente com psicólogo, médico e fisioterapeuta em um
+              só lugar.
             </div>
           </div>
-          <div
-            className="tag tag-blue"
-            style={{ alignSelf: "flex-start", lineHeight: 1.5 }}
-          >
+          <div className="tag tag-blue" style={{ alignSelf: "flex-start" }}>
             Paciente: {patient?.nome || "Não identificado"}
           </div>
         </div>
       </div>
 
-      <div className="row g-4 mb-4">
-        {contatos.map((contato) => (
-          <div className="col-12 col-lg-4" key={contato.cargo}>
-            <div
-              className="card-dark h-100"
-              style={{ borderTop: `3px solid ${contato.cor}` }}
-            >
-              <div className="d-flex align-items-start gap-3 mb-3">
-                <div
-                  style={{
-                    width: 46,
-                    height: 46,
-                    borderRadius: 12,
-                    background: `linear-gradient(135deg, ${contato.cor}44, ${contato.cor}18)`,
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    color: contato.cor,
-                    fontSize: 20,
-                    flex: "0 0 auto",
-                  }}
+      <div className="row g-4">
+        <div className="col-12 col-lg-4">
+          <div className="card-dark h-100">
+            <div className="section-header">Profissionais</div>
+            <div className="contact-list">
+              {profissionais.map((p) => (
+                <button
+                  key={p.key}
+                  type="button"
+                  className={`contact-item ${selecionado === p.key ? "active" : ""}`}
+                  onClick={() => setSelecionado(p.key)}
                 >
-                  <i className={`bi ${contato.icone}`}></i>
-                </div>
-                <div>
-                  <div style={{ fontSize: 17, fontWeight: 700 }}>
-                    {contato.cargo}
+                  <div className="contact-item-title">{p.cargo}</div>
+                  <div className="contact-item-name">{p.nome}</div>
+                  <div className="contact-item-meta">{p.registro}</div>
+                  <div className="contact-item-status" style={{ color: p.cor }}>
+                    <span className="status-dot" style={{ marginRight: 6 }}></span>
+                    {p.status}
                   </div>
-                  <div style={{ color: "var(--text-secondary)", fontSize: 13 }}>
-                    {contato.nome}
-                  </div>
-                  <div
-                    style={{
-                      color: "var(--text-muted)",
-                      fontSize: 11,
-                      fontFamily: "var(--font-mono)",
-                      marginTop: 3,
-                    }}
-                  >
-                    {contato.registro}
-                  </div>
-                </div>
-              </div>
-
-              <div className="d-flex flex-column gap-2">
-                <div className="d-flex align-items-center gap-2">
-                  <i
-                    className="bi bi-clock-history"
-                    style={{ color: contato.cor }}
-                  ></i>
-                  <span style={{ fontSize: 13, color: "var(--text-secondary)" }}>
-                    {contato.horario}
-                  </span>
-                </div>
-                <div className="d-flex align-items-center gap-2">
-                  <i
-                    className="bi bi-telephone-fill"
-                    style={{ color: contato.cor }}
-                  ></i>
-                  <span style={{ fontSize: 13, color: "var(--text-secondary)" }}>
-                    {contato.contato}
-                  </span>
-                </div>
-                <div className="d-flex align-items-center gap-2">
-                  <i
-                    className="bi bi-envelope-fill"
-                    style={{ color: contato.cor }}
-                  ></i>
-                  <span style={{ fontSize: 13, color: "var(--text-secondary)" }}>
-                    {contato.email}
-                  </span>
-                </div>
-              </div>
-
-              <div className="mt-3" style={{ fontSize: 13, color: "var(--text-primary)" }}>
-                {contato.prioridade}
-              </div>
-
-              <div className="mt-3 d-flex flex-wrap gap-2">
-                <span className="tag tag-blue">{contato.canal}</span>
-                <span className="tag tag-green">Resposta rápida</span>
-              </div>
+                </button>
+              ))}
             </div>
           </div>
-        ))}
-      </div>
+        </div>
 
-      <div className="card-dark">
-        <div className="section-header">Como usar a rede de contatos</div>
-        <div className="row g-3">
-          {[
-            "Use o psicólogo para apoio emocional, escuta e organização do cuidado.",
-            "Acione o médico para sintomas novos, piora clínica ou ajuste de conduta.",
-            "Fale com o fisioterapeuta para dor, mobilidade, respiração e exercícios.",
-          ].map((item) => (
-            <div className="col-12 col-md-4" key={item}>
-              <div
-                style={{
-                  background: "var(--bg-panel)",
-                  border: "1px solid var(--border)",
-                  borderRadius: 10,
-                  padding: 14,
-                  height: "100%",
-                  color: "var(--text-secondary)",
-                  fontSize: 13,
-                }}
-              >
-                {item}
-              </div>
+        <div className="col-12 col-lg-8">
+          <div className="card-dark h-100">
+            <div className="section-header">Chat com {profissionalAtivo?.cargo}</div>
+            <div className="support-chat-window">
+              {mensagens.map((item) => (
+                <div
+                  key={item.id}
+                  className={`support-chat-row ${item.sender === "user" ? "user" : "ia"}`}
+                >
+                  <div className={`support-chat-bubble ${item.sender === "user" ? "user" : "ia"}`}>
+                    {item.text}
+                  </div>
+                </div>
+              ))}
             </div>
-          ))}
+
+            <form
+              className="support-input-row mt-3"
+              onSubmit={(e) => {
+                e.preventDefault();
+                enviarMensagem(mensagem);
+              }}
+            >
+              <input
+                type="text"
+                className="support-input"
+                placeholder="Digite sua mensagem para o profissional..."
+                value={mensagem}
+                onChange={(e) => setMensagem(e.target.value)}
+              />
+              <button type="submit" className="btn-neuro">
+                Enviar
+              </button>
+            </form>
+          </div>
         </div>
       </div>
     </div>
@@ -967,27 +974,24 @@ function IAsuportePage() {
               ))}
             </div>
 
-            <div className="support-input-row mt-3">
+            <form
+              className="support-input-row mt-3"
+              onSubmit={(e) => {
+                e.preventDefault();
+                enviarMensagem(mensagem);
+              }}
+            >
               <input
                 type="text"
                 className="support-input"
                 placeholder="Escreva como você está se sentindo..."
                 value={mensagem}
                 onChange={(e) => setMensagem(e.target.value)}
-                onKeyDown={(e) => {
-                  if (e.key === "Enter") {
-                    enviarMensagem(mensagem);
-                  }
-                }}
               />
-              <button
-                type="button"
-                className="btn-neuro"
-                onClick={() => enviarMensagem(mensagem)}
-              >
+              <button type="submit" className="btn-neuro">
                 Enviar
               </button>
-            </div>
+            </form>
           </div>
         </div>
 
