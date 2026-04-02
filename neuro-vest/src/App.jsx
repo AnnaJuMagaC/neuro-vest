@@ -13,6 +13,23 @@ import {
 } from './pages/OtherPages';
 import { getPatient } from './api';
 
+const THEME_STORAGE_KEY = 'neurovest-theme-mode';
+
+function getSystemTheme() {
+  if (typeof window === 'undefined' || !window.matchMedia) return 'dark';
+  return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+}
+
+function resolveTheme(mode) {
+  return mode === 'auto' ? getSystemTheme() : mode;
+}
+
+function getInitialThemeMode() {
+  if (typeof window === 'undefined') return 'auto';
+  const saved = localStorage.getItem(THEME_STORAGE_KEY);
+  return saved === 'light' || saved === 'dark' || saved === 'auto' ? saved : 'auto';
+}
+
 const PAGE_TITLES = {
   dashboard: { title: 'Dashboard', subtitle: 'Visão geral em tempo real' },
   cardio: { title: 'Monitoramento Cardíaco', subtitle: 'Colete Biomédico — ECG · PA · SpO₂' },
@@ -30,12 +47,41 @@ export default function App() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [patient, setPatient] = useState(null);
   const [clock, setClock] = useState(new Date());
+  const [themeMode, setThemeMode] = useState(getInitialThemeMode);
+  const [resolvedTheme, setResolvedTheme] = useState(() => resolveTheme(getInitialThemeMode()));
 
   useEffect(() => {
     getPatient().then(setPatient);
     const t = setInterval(() => setClock(new Date()), 1000);
     return () => clearInterval(t);
   }, []);
+
+  useEffect(() => {
+    localStorage.setItem(THEME_STORAGE_KEY, themeMode);
+    setResolvedTheme(resolveTheme(themeMode));
+  }, [themeMode]);
+
+  useEffect(() => {
+    const media = window.matchMedia('(prefers-color-scheme: dark)');
+    const handleChange = () => {
+      if (themeMode === 'auto') {
+        setResolvedTheme(media.matches ? 'dark' : 'light');
+      }
+    };
+
+    if (media.addEventListener) media.addEventListener('change', handleChange);
+    else media.addListener(handleChange);
+
+    return () => {
+      if (media.removeEventListener) media.removeEventListener('change', handleChange);
+      else media.removeListener(handleChange);
+    };
+  }, [themeMode]);
+
+  useEffect(() => {
+    document.documentElement.setAttribute('data-theme', resolvedTheme);
+    document.documentElement.style.colorScheme = resolvedTheme;
+  }, [resolvedTheme]);
 
   const { title, subtitle } = PAGE_TITLES[page] || PAGE_TITLES.dashboard;
 
@@ -62,6 +108,9 @@ export default function App() {
         setPage={setPage}
         isOpen={sidebarOpen}
         onClose={() => setSidebarOpen(false)}
+        themeMode={themeMode}
+        resolvedTheme={resolvedTheme}
+        onChangeTheme={setThemeMode}
       />
 
       <main className="main-content">

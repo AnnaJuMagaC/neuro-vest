@@ -8,9 +8,11 @@ const navItems = [
   { icon: 'bi-clock-history', label: 'Histórico', page: 'historico' },
   { icon: 'bi-cpu', label: 'Dispositivos', page: 'dispositivos' },
   { icon: 'bi-person-lines-fill', label: 'Paciente', page: 'paciente' },
+  { icon: 'bi-telephone-fill', label: 'Contatos', page: 'contatos' },
+  { icon: 'bi-chat-dots-fill', label: 'IA de Suporte', page: 'suporte' },
 ];
 
-export default function Sidebar({ currentPage, setPage, isOpen, onClose }) {
+export default function Sidebar({ currentPage, setPage, isOpen, onClose, themeMode, resolvedTheme, onChangeTheme }) {
   return (
     <>
       <div className={`sidebar-overlay ${isOpen ? 'open' : ''}`} onClick={onClose} />
@@ -34,7 +36,19 @@ export default function Sidebar({ currentPage, setPage, isOpen, onClose }) {
         ))}
 
         <div className="nav-section-label">Sistema</div>
-        {navItems.slice(4).map(item => (
+        {navItems.slice(4, 7).map(item => (
+          <div
+            key={item.page}
+            className={`nav-item ${currentPage === item.page ? 'active' : ''}`}
+            onClick={() => { setPage(item.page); onClose(); }}
+          >
+            <i className={`bi ${item.icon}`}></i>
+            {item.label}
+          </div>
+        ))}
+
+        <div className="nav-section-label">Apoio</div>
+        {navItems.slice(7).map(item => (
           <div
             key={item.page}
             className={`nav-item ${currentPage === item.page ? 'active' : ''}`}
@@ -46,6 +60,25 @@ export default function Sidebar({ currentPage, setPage, isOpen, onClose }) {
         ))}
 
         <div className="sidebar-footer">
+          <div className="theme-section">
+            <div className="theme-label">Tema</div>
+            <div className="theme-toggle" role="group" aria-label="Alternar tema">
+              <button type="button" className={`theme-btn ${themeMode === 'auto' ? 'active' : ''}`} onClick={() => onChangeTheme('auto')}>
+                <i className="bi bi-circle-half me-1"></i>
+                Auto
+              </button>
+              <button type="button" className={`theme-btn ${themeMode === 'light' ? 'active' : ''}`} onClick={() => onChangeTheme('light')}>
+                <i className="bi bi-sun-fill me-1"></i>
+                Claro
+              </button>
+              <button type="button" className={`theme-btn ${themeMode === 'dark' ? 'active' : ''}`} onClick={() => onChangeTheme('dark')}>
+                <i className="bi bi-moon-stars-fill me-1"></i>
+                Escuro
+              </button>
+            </div>
+            <div className="theme-hint">Aplicado: {resolvedTheme === 'dark' ? 'Escuro' : 'Claro'}</div>
+          </div>
+
           <div style={{ fontSize: 12, color: 'var(--text-muted)', display: 'flex', alignItems: 'center' }}>
             <span className="status-dot"></span>
             Dispositivos conectados
