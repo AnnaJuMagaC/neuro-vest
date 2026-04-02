@@ -40,7 +40,7 @@ html[data-theme="light"] {
   --accent-blue: #27466f;
   --accent-cyan: #91b6cb;
   --accent-green: #91b6cb; /* mapped to cyan/blue */
-  --accent-red: #6645ac;   /* mapped to purple */
+  --accent-red: #6645ac; /* mapped to purple */
   --accent-orange: #6645ac; /* mapped to purple */
   --accent-purple: #6645ac;
   --accent-violet: #8b5cf6;
@@ -564,9 +564,9 @@ body::before {
   border: 1px solid #91b6cb33;
 }
 .tag-orange {
-  background: #d4875a18;
-  color: #d4875a;
-  border: 1px solid #d4875a33;
+  background: #6645ac18;
+  color: var(--accent-orange);
+  border: 1px solid #6645ac33;
 }
 .tag-red {
   background: #6645ac18;

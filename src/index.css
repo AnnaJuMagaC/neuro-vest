@@ -49,7 +49,7 @@ html[data-theme="light"] {
   --accent-cyan: #91b6cb;
   --accent-green: #0d2443;
   --accent-red: #c3c3c3;
-  --accent-orange: #c3c3c3;
+  --accent-orange: #6645ac;
   --accent-purple: #6645ac;
   --accent-violet: #6645ac;
   --accent-brown: #0d2443;
@@ -60,10 +60,10 @@ html[data-theme="light"] {
   --alert-bg-end: #6645ac18;
   --alert-border-soft: #8dc1df44;
   --alert-border-strong: #6645ac77;
-  --ecg-screen-bg: #f0f8f4;
-  --ecg-screen-border: #4caf8244;
-  --success-surface: #edf8f2;
-  --success-border: #4caf823f;
+  --ecg-screen-bg: #eef4fb;
+  --ecg-screen-border: #8dc1df55;
+  --success-surface: #eef4fb;
+  --success-border: #8dc1df55;
 }
 
 * {
@@ -239,10 +239,10 @@ body::before {
 @keyframes pulse-dot {
   0%,
   100% {
-    box-shadow: 0 0 0 0 #4caf8255;
+    box-shadow: 0 0 0 0 #8dc1df55;
   }
   50% {
-    box-shadow: 0 0 0 4px #4caf8215;
+    box-shadow: 0 0 0 4px #6645ac22;
   }
 }
 
@@ -313,7 +313,7 @@ body::before {
   background: linear-gradient(90deg, var(--accent-blue), var(--accent-cyan));
 }
 .metric-card.green::before {
-  background: linear-gradient(90deg, var(--accent-green), #2e8b5a);
+  background: linear-gradient(90deg, var(--accent-green), var(--accent-cyan));
 }
 .metric-card.red::before {
   background: linear-gradient(90deg, var(--accent-red), var(--accent-orange));
@@ -326,7 +326,11 @@ body::before {
   );
 }
 .metric-card.orange::before {
-  background: linear-gradient(90deg, var(--accent-orange), #c9a040);
+  background: linear-gradient(
+    90deg,
+    var(--accent-orange),
+    var(--accent-violet)
+  );
 }
 
 .metric-label {
@@ -757,14 +761,14 @@ body::before {
   font-family: var(--font-mono);
 }
 .tag-green {
-  background: #4caf8218;
+  background: #4a7fa018;
   color: var(--accent-green);
-  border: 1px solid #4caf8233;
+  border: 1px solid #4a7fa033;
 }
 .tag-orange {
-  background: #d4875a18;
+  background: #6645ac18;
   color: var(--accent-orange);
-  border: 1px solid #d4875a33;
+  border: 1px solid #6645ac33;
 }
 .tag-red {
   background: #e05c6e18;
