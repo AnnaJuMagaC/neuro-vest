@@ -469,6 +469,30 @@ function DispositivosPage() {
 
   return (
     <div>
+      <div
+        className="card-dark mb-4"
+        style={{
+          background:
+            "linear-gradient(135deg, rgba(141, 193, 223, 0.12), rgba(102, 69, 172, 0.10))",
+          border: "1px solid rgba(141, 193, 223, 0.18)",
+        }}
+      >
+        <div className="d-flex flex-column flex-lg-row justify-content-between gap-3 align-items-lg-center">
+          <div>
+            <div className="section-header mb-2">Central de Dispositivos</div>
+            <div style={{ color: "var(--text-secondary)", fontSize: 14 }}>
+              Acompanhe os equipamentos conectados, autonomia, sinal e ações de
+              manutenção em um painel visual.
+            </div>
+          </div>
+          <div className="d-flex flex-wrap gap-2">
+            <span className="tag tag-green">2 dispositivos ativos</span>
+            <span className="tag tag-blue">Telemetria em tempo real</span>
+            <span className="tag tag-orange">Sem falhas críticas</span>
+          </div>
+        </div>
+      </div>
+
       <div className="row g-3 mb-4">
         {resumo.map((item) => (
           <div className="col-12 col-md-4" key={item.label}>
