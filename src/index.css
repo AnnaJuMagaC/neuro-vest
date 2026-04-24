@@ -486,7 +486,10 @@ body::before {
   cursor: pointer;
   z-index: 120;
   box-shadow: 0 10px 28px #6645ac5a;
-  transition: transform 0.2s ease, box-shadow 0.2s ease, filter 0.2s ease;
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease,
+    filter 0.2s ease;
 }
 
 .chat-human-fab:hover {
@@ -496,7 +499,9 @@ body::before {
 }
 
 .chat-human-fab.active {
-  box-shadow: 0 0 0 3px #8dc1df66, 0 14px 34px #6645ac72;
+  box-shadow:
+    0 0 0 3px #8dc1df66,
+    0 14px 34px #6645ac72;
 }
 
 @media (max-width: 992px) {
