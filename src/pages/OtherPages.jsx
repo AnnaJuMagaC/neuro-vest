@@ -1248,7 +1248,8 @@ function AdminChatPage({
     const thread = threads[patientId] || [];
     const last = thread[thread.length - 1];
     if (!last) return "Sem mensagens ainda";
-    const sender = last.senderName || (last.sender === "admin" ? "Médico" : "Paciente");
+    const sender =
+      last.senderName || (last.sender === "admin" ? "Médico" : "Paciente");
     const text = String(last.text || "");
     const clipped = text.length > 40 ? `${text.slice(0, 40)}...` : text;
     return `${sender}: ${clipped}`;
@@ -1308,7 +1309,9 @@ function AdminChatPage({
                       <div>
                         <div className="contact-item-title">Paciente</div>
                         <div className="contact-item-name">{entry.nome}</div>
-                        <div className="contact-item-meta">{getPreview(entry.id)}</div>
+                        <div className="contact-item-meta">
+                          {getPreview(entry.id)}
+                        </div>
                       </div>
                       {unread > 0 && (
                         <span className="contact-unread-badge">
@@ -1347,7 +1350,9 @@ function AdminChatPage({
                         <div
                           className={`support-chat-bubble ${isOwnMessage ? "user" : "ia"}`}
                         >
-                          <div className="support-chat-sender">{senderTitle}</div>
+                          <div className="support-chat-sender">
+                            {senderTitle}
+                          </div>
                           {item.text}
                         </div>
                       </div>
