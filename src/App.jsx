@@ -442,8 +442,9 @@ export default function App() {
   useEffect(() => {
     const activePatientId = patient?.id;
     const chatOpenForCurrentRole =
-      (authRole === "patient" && page === "chatPaciente") ||
-      (authRole === "admin" && page === "chatAdmin");
+      (authRole === "patient" &&
+        (page === "chatPaciente" || page === "contatos")) ||
+      (authRole === "admin" && (page === "chatAdmin" || page === "contatos"));
 
     if (!activePatientId || !chatOpenForCurrentRole) return;
 
@@ -500,6 +501,37 @@ export default function App() {
       case "paciente":
         return <PacientePage patient={patient} />;
       case "contatos":
+        if (authRole === "patient") {
+          return (
+            <PacienteChatPage
+              patient={patient}
+              setPage={setPage}
+              onLogout={handleLogout}
+              chat={activeHumanChat}
+              onSendMessage={(text) => handleSendHumanMessage(text, "patient")}
+              currentUserName={currentUser?.name}
+              directMode
+            />
+          );
+        }
+        if (authRole === "admin") {
+          return (
+            <AdminChatPage
+              patient={patient}
+              patients={patients}
+              selectedPatientId={selectedPatientId}
+              onSelectPatient={handleSelectPatient}
+              setPage={setPage}
+              onLogout={handleLogout}
+              chat={activeHumanChat}
+              threads={humanChatThreads}
+              unreadByPatient={humanChatUnread}
+              onSendMessage={(text) => handleSendHumanMessage(text, "admin")}
+              currentUserName={currentUser?.name}
+              directMode
+            />
+          );
+        }
         return (
           <ChatAccessPage
             patient={patient}
@@ -545,9 +577,14 @@ export default function App() {
         return (
           <AdminChatPage
             patient={patient}
+            patients={patients}
+            selectedPatientId={selectedPatientId}
+            onSelectPatient={handleSelectPatient}
             setPage={setPage}
             onLogout={handleLogout}
             chat={activeHumanChat}
+            threads={humanChatThreads}
+            unreadByPatient={humanChatUnread}
             onSendMessage={(text) => handleSendHumanMessage(text, "admin")}
             currentUserName={currentUser?.name}
           />
