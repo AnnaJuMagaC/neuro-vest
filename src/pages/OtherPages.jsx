@@ -990,78 +990,70 @@ function ChatAccessPage({ patient, setPage, authRole, accessError }) {
       )}
 
       <div className="row g-4">
-        <div className="col-12 col-lg-6">
-          <div
-            className="card-dark h-100 d-flex flex-column"
-            style={{ borderLeft: "3px solid var(--accent-cyan)" }}
-          >
-            <div className="section-header">Acesso do Paciente</div>
+        {isPatient && (
+          <div className="col-12">
             <div
-              style={{
-                fontSize: 14,
-                color: "var(--text-secondary)",
-                lineHeight: 1.6,
-              }}
+              className="card-dark h-100 d-flex flex-column"
+              style={{ borderLeft: "3px solid var(--accent-cyan)" }}
             >
-              Área para o paciente enviar mensagens para a equipe médica.
-            </div>
-            <div className="d-flex flex-wrap gap-2 mt-3 mb-4">
-              <span className="tag tag-blue">Enviar mensagens</span>
-              <span className="tag tag-green">Acompanhar retorno</span>
-            </div>
+              <div className="section-header">Acesso do Paciente</div>
+              <div
+                style={{
+                  fontSize: 14,
+                  color: "var(--text-secondary)",
+                  lineHeight: 1.6,
+                }}
+              >
+                Área para o paciente enviar mensagens para a equipe médica.
+              </div>
+              <div className="d-flex flex-wrap gap-2 mt-3 mb-4">
+                <span className="tag tag-blue">Enviar mensagens</span>
+                <span className="tag tag-green">Acompanhar retorno</span>
+              </div>
 
-            <button
-              type="button"
-              className="btn-neuro mt-auto"
-              disabled={!isPatient}
-              onClick={() => setPage("chatPaciente")}
-              title={
-                !isPatient
-                  ? "Apenas usuários autenticados como paciente podem entrar."
-                  : ""
-              }
-            >
-              Entrar como Paciente
-            </button>
+              <button
+                type="button"
+                className="btn-neuro mt-auto"
+                onClick={() => setPage("chatPaciente")}
+              >
+                Entrar como Paciente
+              </button>
+            </div>
           </div>
-        </div>
+        )}
 
-        <div className="col-12 col-lg-6">
-          <div
-            className="card-dark h-100 d-flex flex-column"
-            style={{ borderLeft: "3px solid var(--accent-purple)" }}
-          >
-            <div className="section-header">Acesso Médico/Admin</div>
+        {isAdmin && (
+          <div className="col-12">
             <div
-              style={{
-                fontSize: 14,
-                color: "var(--text-secondary)",
-                lineHeight: 1.6,
-              }}
+              className="card-dark h-100 d-flex flex-column"
+              style={{ borderLeft: "3px solid var(--accent-purple)" }}
             >
-              Área da equipe para leitura e resposta das mensagens dos
-              pacientes.
-            </div>
-            <div className="d-flex flex-wrap gap-2 mt-3 mb-4">
-              <span className="tag tag-purple">Responder pacientes</span>
-              <span className="tag tag-orange">Painel clínico</span>
-            </div>
+              <div className="section-header">Acesso Médico/Admin</div>
+              <div
+                style={{
+                  fontSize: 14,
+                  color: "var(--text-secondary)",
+                  lineHeight: 1.6,
+                }}
+              >
+                Área da equipe para leitura e resposta das mensagens dos
+                pacientes.
+              </div>
+              <div className="d-flex flex-wrap gap-2 mt-3 mb-4">
+                <span className="tag tag-purple">Responder pacientes</span>
+                <span className="tag tag-orange">Painel clínico</span>
+              </div>
 
-            <button
-              type="button"
-              className="btn-neuro mt-auto"
-              disabled={!isAdmin}
-              onClick={() => setPage("chatAdmin")}
-              title={
-                !isAdmin
-                  ? "Apenas usuários autenticados como médico/admin podem entrar."
-                  : ""
-              }
-            >
-              Entrar como Médico/Admin
-            </button>
+              <button
+                type="button"
+                className="btn-neuro mt-auto"
+                onClick={() => setPage("chatAdmin")}
+              >
+                Entrar como Médico/Admin
+              </button>
+            </div>
           </div>
-        </div>
+        )}
       </div>
 
       <div

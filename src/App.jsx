@@ -529,7 +529,7 @@ export default function App() {
         aria-label="Abrir chat humano"
         title="Chat Humano"
       >
-        <i className="bi bi-telephone-fill"></i>
+        <i className="bi bi-chat-dots-fill"></i>
       </button>
     </>
   );
