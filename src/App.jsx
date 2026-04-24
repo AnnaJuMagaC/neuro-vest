@@ -395,6 +395,10 @@ export default function App() {
     setPage("dashboard");
   };
 
+  const handleSelectPatientForChat = (patientId) => {
+    setSelectedPatientId(patientId);
+  };
+
   const handleSendHumanMessage = (text, senderRole) => {
     const content = String(text || "").trim();
     const activePatientId = patient?.id;
@@ -462,7 +466,13 @@ export default function App() {
   }, [authRole, page, patient?.id, unreadRoleKey]);
 
   const renderPage = () => {
-    if (authRole === "admin" && !hasSelectedPatient && page !== "clientes") {
+    if (
+      authRole === "admin" &&
+      !hasSelectedPatient &&
+      page !== "clientes" &&
+      page !== "contatos" &&
+      page !== "chatAdmin"
+    ) {
       return (
         <ClientesPage
           patients={patients}
@@ -473,7 +483,9 @@ export default function App() {
       );
     }
 
-    const canRenderWithoutPatient = page === "clientes" && authRole === "admin";
+    const canRenderWithoutPatient =
+      authRole === "admin" &&
+      ["clientes", "contatos", "chatAdmin"].includes(page);
     if (!patient && !canRenderWithoutPatient) return null;
     switch (page) {
       case "clientes":
@@ -520,7 +532,7 @@ export default function App() {
               patient={patient}
               patients={patients}
               selectedPatientId={selectedPatientId}
-              onSelectPatient={handleSelectPatient}
+              onSelectPatient={handleSelectPatientForChat}
               setPage={setPage}
               onLogout={handleLogout}
               chat={activeHumanChat}
@@ -579,7 +591,7 @@ export default function App() {
             patient={patient}
             patients={patients}
             selectedPatientId={selectedPatientId}
-            onSelectPatient={handleSelectPatient}
+            onSelectPatient={handleSelectPatientForChat}
             setPage={setPage}
             onLogout={handleLogout}
             chat={activeHumanChat}
