@@ -1362,7 +1362,9 @@ function AdminChatPage({
                         <div
                           className={`support-chat-bubble ${isOwnMessage ? "user" : "ia"}`}
                         >
-                          <div className="support-chat-sender">{senderTitle}</div>
+                          <div className="support-chat-sender">
+                            {senderTitle}
+                          </div>
                           {item.text}
                         </div>
                       </div>
