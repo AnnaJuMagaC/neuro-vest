@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 
 const navItems = [
   { icon: 'bi-grid-1x2-fill', label: 'Dashboard', page: 'dashboard' },
@@ -11,40 +11,80 @@ const navItems = [
   { icon: 'bi-chat-dots-fill', label: 'IA de Suporte', page: 'suporte' },
 ];
 
-export default function Sidebar({ currentPage, setPage, isOpen, onClose, themeMode, resolvedTheme, onChangeTheme }) {
+export default function Sidebar({
+  currentPage,
+  setPage,
+  isOpen,
+  onClose,
+  authRole,
+  hasSelectedPatient,
+  themeMode,
+  resolvedTheme,
+  onChangeTheme,
+}) {
+  const hideMonitoring =
+    authRole === "admin" && (!hasSelectedPatient || currentPage === "clientes");
+
   return (
     <>
-      <div className={`sidebar-overlay ${isOpen ? 'open' : ''}`} onClick={onClose} />
-      <nav className={`sidebar ${isOpen ? 'open' : ''}`}>
+      <div
+        className={`sidebar-overlay ${isOpen ? "open" : ""}`}
+        onClick={onClose}
+      />
+      <nav className={`sidebar ${isOpen ? "open" : ""}`}>
         <div className="sidebar-logo">
           <div className="logo-icon">🧠</div>
           <div className="logo-title">NeuroVest</div>
           <div className="logo-sub">Sistema Biomédico v1.0</div>
         </div>
 
-        <div className="nav-section-label">Monitoramento</div>
-        {navItems.slice(0, 4).map(item => (
-          <div
-            key={item.page}
-            className={`nav-item ${currentPage === item.page ? 'active' : ''}`}
-            onClick={() => { setPage(item.page); onClose(); }}
-          >
-            <i className={`bi ${item.icon}`}></i>
-            {item.label}
-          </div>
-        ))}
+        {authRole === "admin" && (
+          <>
+            <div className="nav-section-label">Médico</div>
+            <div
+              className={`nav-item ${currentPage === "clientes" ? "active" : ""}`}
+              onClick={() => {
+                setPage("clientes");
+                onClose();
+              }}
+            >
+              <i className="bi bi-people-fill"></i>
+              Meus Clientes
+            </div>
+          </>
+        )}
 
-        <div className="nav-section-label">Sistema</div>
-        {navItems.slice(4, 7).map(item => (
-          <div
-            key={item.page}
-            className={`nav-item ${currentPage === item.page ? 'active' : ''}`}
-            onClick={() => { setPage(item.page); onClose(); }}
-          >
-            <i className={`bi ${item.icon}`}></i>
-            {item.label}
-          </div>
-        ))}
+        {!hideMonitoring && (
+          <>
+            <div className="nav-section-label">Monitoramento</div>
+            {navItems.slice(0, 4).map((item) => (
+              <div
+                key={item.page}
+                className={`nav-item ${currentPage === item.page ? "active" : ""}`}
+                onClick={() => {
+                  setPage(item.page);
+                  onClose();
+                }}
+              >
+                <i className={`bi ${item.icon}`}></i>
+                {item.label}
+              </div>
+            ))}
+
+            <div className="nav-section-label">Sistema</div>
+            {navItems.slice(4, 7).map((item) => (
+              <div
+                key={item.page}
+                className={`nav-item ${currentPage === item.page ? "active" : ""}`}
+                onClick={() => {
+                  setPage(item.page);
+                  onClose();
+                }}
+              >
+                <i className={`bi ${item.icon}`}></i>
+                {item.label}
+              </div>
+            ))}
 
         <div className="nav-section-label">Apoio</div>
         {navItems.slice(7).map(item => (
@@ -66,11 +106,19 @@ export default function Sidebar({ currentPage, setPage, isOpen, onClose, themeMo
                 <i className="bi bi-circle-half me-1"></i>
                 Auto
               </button>
-              <button type="button" className={`theme-btn ${themeMode === 'light' ? 'active' : ''}`} onClick={() => onChangeTheme('light')}>
+              <button
+                type="button"
+                className={`theme-btn ${themeMode === "light" ? "active" : ""}`}
+                onClick={() => onChangeTheme("light")}
+              >
                 <i className="bi bi-sun-fill me-1"></i>
                 Claro
               </button>
-              <button type="button" className={`theme-btn ${themeMode === 'dark' ? 'active' : ''}`} onClick={() => onChangeTheme('dark')}>
+              <button
+                type="button"
+                className={`theme-btn ${themeMode === "dark" ? "active" : ""}`}
+                onClick={() => onChangeTheme("dark")}
+              >
                 <i className="bi bi-moon-stars-fill me-1"></i>
                 Escuro
               </button>
