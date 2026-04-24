@@ -955,9 +955,16 @@ function ClientesPage({
 }
 
 // ===== CHAT HUMANO (PORTAL DE ACESSO) =====
-function ChatAccessPage({ patient, setPage, authRole, accessError }) {
+function ChatAccessPage({
+  patient,
+  setPage,
+  authRole,
+  accessError,
+  unreadCount = 0,
+}) {
   const isPatient = authRole === "patient";
   const isAdmin = authRole === "admin";
+  const unreadLabel = isAdmin ? "paciente" : "médico";
 
   return (
     <div>
@@ -985,6 +992,19 @@ function ChatAccessPage({ patient, setPage, authRole, accessError }) {
           ></i>
           <div style={{ fontSize: 13, color: "var(--text-primary)" }}>
             {accessError}
+          </div>
+        </div>
+      )}
+
+      {unreadCount > 0 && (
+        <div className="alert-strip" style={{ marginTop: accessError ? 12 : 0 }}>
+          <i
+            className="bi bi-bell-fill"
+            style={{ color: "var(--accent-cyan)", fontSize: 18 }}
+          ></i>
+          <div style={{ fontSize: 13, color: "var(--text-primary)" }}>
+            Você tem {unreadCount} nova{unreadCount > 1 ? "s" : ""} mensagem
+            {unreadCount > 1 ? "ens" : ""} de {unreadLabel}.
           </div>
         </div>
       )}
@@ -1081,6 +1101,7 @@ function PacienteChatPage({
   onLogout,
   chat = [],
   onSendMessage,
+  currentUserName,
 }) {
   const [mensagem, setMensagem] = useState("");
   const mensagensVisiveis =
@@ -1139,6 +1160,9 @@ function PacienteChatPage({
         <div className="support-chat-window">
           {mensagensVisiveis.map((item) => {
             const isOwnMessage = item.sender === "patient";
+            const senderTitle = isOwnMessage
+              ? currentUserName || "Você"
+              : item.senderName || "Médico/Admin";
             return (
               <div
                 key={item.id}
@@ -1147,6 +1171,7 @@ function PacienteChatPage({
                 <div
                   className={`support-chat-bubble ${isOwnMessage ? "user" : "ia"}`}
                 >
+                  <div className="support-chat-sender">{senderTitle}</div>
                   {item.text}
                 </div>
               </div>
@@ -1183,6 +1208,7 @@ function AdminChatPage({
   onLogout,
   chat = [],
   onSendMessage,
+  currentUserName,
 }) {
   const [mensagem, setMensagem] = useState("");
   const mensagensVisiveis =
@@ -1240,6 +1266,9 @@ function AdminChatPage({
         <div className="support-chat-window">
           {mensagensVisiveis.map((item) => {
             const isOwnMessage = item.sender === "admin";
+            const senderTitle = isOwnMessage
+              ? currentUserName || "Você"
+              : item.senderName || patient?.nome || "Paciente";
             return (
               <div
                 key={item.id}
@@ -1248,6 +1277,7 @@ function AdminChatPage({
                 <div
                   className={`support-chat-bubble ${isOwnMessage ? "user" : "ia"}`}
                 >
+                  <div className="support-chat-sender">{senderTitle}</div>
                   {item.text}
                 </div>
               </div>

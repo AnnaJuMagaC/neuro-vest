@@ -492,6 +492,26 @@ body::before {
     filter 0.2s ease;
 }
 
+.chat-human-fab-badge {
+  position: absolute;
+  top: -6px;
+  right: -6px;
+  min-width: 22px;
+  height: 22px;
+  border-radius: 999px;
+  background: #ef4444;
+  color: #ffffff;
+  border: 2px solid var(--bg-card);
+  font-size: 10px;
+  font-family: var(--font-mono);
+  font-weight: 700;
+  padding: 0 6px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 0 0 1px #ef444455;
+}
+
 .chat-human-fab:hover {
   transform: translateY(-2px) scale(1.03);
   box-shadow: 0 14px 34px #6645ac72;
@@ -760,6 +780,15 @@ body::before {
   font-size: 13px;
   line-height: 1.5;
   border: 1px solid var(--border);
+}
+
+.support-chat-sender {
+  font-size: 10px;
+  font-family: var(--font-mono);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  opacity: 0.8;
+  margin-bottom: 6px;
 }
 
 .support-chat-bubble.ia {
