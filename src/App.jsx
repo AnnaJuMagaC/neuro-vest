@@ -514,6 +514,23 @@ export default function App() {
         {/* Conteúdo da página */}
         {renderPage()}
       </main>
+
+      <button
+        type="button"
+        className={`chat-human-fab ${
+          ["contatos", "chatPaciente", "chatAdmin"].includes(page)
+            ? "active"
+            : ""
+        }`}
+        onClick={() => {
+          setPage("contatos");
+          setSidebarOpen(false);
+        }}
+        aria-label="Abrir chat humano"
+        title="Chat Humano"
+      >
+        <i className="bi bi-telephone-fill"></i>
+      </button>
     </>
   );
 }

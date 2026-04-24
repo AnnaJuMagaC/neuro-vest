@@ -8,7 +8,6 @@ const navItems = [
   { icon: "bi-clock-history", label: "Histórico", page: "historico" },
   { icon: "bi-cpu", label: "Dispositivos", page: "dispositivos" },
   { icon: "bi-person-lines-fill", label: "Paciente", page: "paciente" },
-  { icon: "bi-telephone-fill", label: "Chat Humano", page: "contatos" },
   { icon: "bi-chat-dots-fill", label: "IA de Suporte", page: "suporte" },
 ];
 
