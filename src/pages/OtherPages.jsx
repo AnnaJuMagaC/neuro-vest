@@ -1075,25 +1075,26 @@ function ChatAccessPage({ patient, setPage, authRole, accessError }) {
   );
 }
 
-function PacienteChatPage({ patient, setPage, onLogout }) {
+function PacienteChatPage({ patient, setPage, onLogout, chat = [], onSendMessage }) {
   const [mensagem, setMensagem] = useState("");
-  const [chat, setChat] = useState([
-    {
-      id: 1,
-      sender: "ia",
-      text: "Canal humano ativo. Escreva sua mensagem para o médico.",
-    },
-  ]);
+  const mensagensVisiveis =
+    chat.length > 0
+      ? chat
+      : [
+          {
+            id: "welcome-patient",
+            sender: "system",
+            text: "Canal humano ativo. Escreva sua mensagem para o médico.",
+          },
+        ];
 
   const enviarMensagem = (texto) => {
     const conteudo = texto.trim();
     if (!conteudo) return;
 
-    const idBase = Date.now();
-    setChat((prev) => [
-      ...prev,
-      { id: `${idBase}-p`, sender: "user", text: conteudo },
-    ]);
+    if (typeof onSendMessage === "function") {
+      onSendMessage(conteudo);
+    }
     setMensagem("");
   };
 
@@ -1130,18 +1131,21 @@ function PacienteChatPage({ patient, setPage, onLogout }) {
         <div className="section-header">Chat com equipe médica</div>
 
         <div className="support-chat-window">
-          {chat.map((item) => (
-            <div
-              key={item.id}
-              className={`support-chat-row ${item.sender === "user" ? "user" : "ia"}`}
-            >
+          {mensagensVisiveis.map((item) => {
+            const isOwnMessage = item.sender === "patient";
+            return (
               <div
-                className={`support-chat-bubble ${item.sender === "user" ? "user" : "ia"}`}
+                key={item.id}
+                className={`support-chat-row ${isOwnMessage ? "user" : "ia"}`}
               >
-                {item.text}
+                <div
+                  className={`support-chat-bubble ${isOwnMessage ? "user" : "ia"}`}
+                >
+                  {item.text}
+                </div>
               </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
 
         <form
@@ -1167,25 +1171,26 @@ function PacienteChatPage({ patient, setPage, onLogout }) {
   );
 }
 
-function AdminChatPage({ patient, setPage, onLogout }) {
+function AdminChatPage({ patient, setPage, onLogout, chat = [], onSendMessage }) {
   const [mensagem, setMensagem] = useState("");
-  const [chat, setChat] = useState([
-    {
-      id: 1,
-      sender: "ia",
-      text: `Paciente ${patient?.nome || "não identificado"} iniciou conversa.`,
-    },
-  ]);
+  const mensagensVisiveis =
+    chat.length > 0
+      ? chat
+      : [
+          {
+            id: "welcome-admin",
+            sender: "system",
+            text: `Paciente ${patient?.nome || "não identificado"} iniciou conversa.`,
+          },
+        ];
 
   const enviarResposta = (texto) => {
     const conteudo = texto.trim();
     if (!conteudo) return;
 
-    const idBase = Date.now();
-    setChat((prev) => [
-      ...prev,
-      { id: `${idBase}-m`, sender: "user", text: conteudo },
-    ]);
+    if (typeof onSendMessage === "function") {
+      onSendMessage(conteudo);
+    }
     setMensagem("");
   };
 
@@ -1221,18 +1226,21 @@ function AdminChatPage({ patient, setPage, onLogout }) {
         <div className="section-header">Conversa com paciente</div>
 
         <div className="support-chat-window">
-          {chat.map((item) => (
-            <div
-              key={item.id}
-              className={`support-chat-row ${item.sender === "user" ? "user" : "ia"}`}
-            >
+          {mensagensVisiveis.map((item) => {
+            const isOwnMessage = item.sender === "admin";
+            return (
               <div
-                className={`support-chat-bubble ${item.sender === "user" ? "user" : "ia"}`}
+                key={item.id}
+                className={`support-chat-row ${isOwnMessage ? "user" : "ia"}`}
               >
-                {item.text}
+                <div
+                  className={`support-chat-bubble ${isOwnMessage ? "user" : "ia"}`}
+                >
+                  {item.text}
+                </div>
               </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
 
         <form

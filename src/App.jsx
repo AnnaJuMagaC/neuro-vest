@@ -20,6 +20,7 @@ import { getPatient } from "./api";
 const THEME_STORAGE_KEY = "neurovest-theme-mode";
 const USERS_STORAGE_KEY = "neurovest-users";
 const SESSION_STORAGE_KEY = "neurovest-session";
+const HUMAN_CHAT_STORAGE_KEY = "neurovest-human-chat-threads";
 
 const SEED_USERS = [
   {
@@ -96,6 +97,22 @@ function getInitialThemeMode() {
   return "light";
 }
 
+function getInitialHumanChatThreads() {
+  if (typeof window === "undefined") return {};
+  const saved = localStorage.getItem(HUMAN_CHAT_STORAGE_KEY);
+  if (!saved) return {};
+
+  try {
+    const parsed = JSON.parse(saved);
+    if (!parsed || Array.isArray(parsed) || typeof parsed !== "object") {
+      return {};
+    }
+    return parsed;
+  } catch {
+    return {};
+  }
+}
+
 const PAGE_TITLES = {
   clientes: {
     title: "Meus Clientes",
@@ -153,6 +170,9 @@ export default function App() {
   const [users, setUsers] = useState(getInitialUsers);
   const [currentUser, setCurrentUser] = useState(getInitialSession);
   const [themeMode, setThemeMode] = useState(getInitialThemeMode);
+  const [humanChatThreads, setHumanChatThreads] = useState(
+    getInitialHumanChatThreads,
+  );
   const [resolvedTheme, setResolvedTheme] = useState(() =>
     resolveTheme(getInitialThemeMode()),
   );
@@ -231,6 +251,13 @@ export default function App() {
       localStorage.removeItem(SESSION_STORAGE_KEY);
     }
   }, [currentUser]);
+
+  useEffect(() => {
+    localStorage.setItem(
+      HUMAN_CHAT_STORAGE_KEY,
+      JSON.stringify(humanChatThreads),
+    );
+  }, [humanChatThreads]);
 
   const { title, subtitle } = PAGE_TITLES[page] || PAGE_TITLES.dashboard;
 
@@ -341,6 +368,27 @@ export default function App() {
     setPage("dashboard");
   };
 
+  const handleSendHumanMessage = (text, senderRole) => {
+    const content = String(text || "").trim();
+    const activePatientId = patient?.id;
+    if (!content || !activePatientId) return;
+
+    const sender = senderRole === "admin" ? "admin" : "patient";
+    const message = {
+      id: `${Date.now()}-${Math.random().toString(36).slice(2, 8)}`,
+      sender,
+      text: content,
+      createdAt: new Date().toISOString(),
+    };
+
+    setHumanChatThreads((prev) => ({
+      ...prev,
+      [activePatientId]: [...(prev[activePatientId] || []), message],
+    }));
+  };
+
+  const activeHumanChat = patient?.id ? humanChatThreads[patient.id] || [] : [];
+
   const renderPage = () => {
     if (authRole === "admin" && !hasSelectedPatient && page !== "clientes") {
       return (
@@ -404,6 +452,8 @@ export default function App() {
             patient={patient}
             setPage={setPage}
             onLogout={handleLogout}
+            chat={activeHumanChat}
+            onSendMessage={(text) => handleSendHumanMessage(text, "patient")}
           />
         );
       case "chatAdmin":
@@ -422,6 +472,8 @@ export default function App() {
             patient={patient}
             setPage={setPage}
             onLogout={handleLogout}
+            chat={activeHumanChat}
+            onSendMessage={(text) => handleSendHumanMessage(text, "admin")}
           />
         );
       case "suporte":
