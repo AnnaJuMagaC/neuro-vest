@@ -708,6 +708,12 @@ body::before {
   gap: 10px;
 }
 
+.contact-item-row {
+  display: flex;
+  align-items: stretch;
+  gap: 8px;
+}
+
 .contact-item {
   width: 100%;
   text-align: left;
@@ -764,6 +770,22 @@ body::before {
   display: inline-flex;
   align-items: center;
   justify-content: center;
+}
+
+.contact-delete-btn {
+  width: 38px;
+  border: 1px solid var(--border);
+  background: var(--bg-panel);
+  color: var(--text-muted);
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.contact-delete-btn:hover {
+  color: #ef4444;
+  border-color: #ef444466;
+  box-shadow: 0 0 0 2px #ef444422;
 }
 
 /* Chat suporte */

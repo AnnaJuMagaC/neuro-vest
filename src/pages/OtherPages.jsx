@@ -1213,6 +1213,7 @@ function AdminChatPage({
   patients = [],
   selectedPatientId,
   onSelectPatient,
+  onDeletePatientChat,
   setPage,
   onLogout,
   chat = [],
@@ -1299,27 +1300,38 @@ function AdminChatPage({
               {patients.map((entry) => {
                 const unread = unreadByPatient[entry.id]?.admin || 0;
                 return (
-                  <button
-                    key={entry.id}
-                    type="button"
-                    className={`contact-item ${selectedPatientId === entry.id ? "active" : ""}`}
-                    onClick={() => onSelectPatient?.(entry.id)}
-                  >
-                    <div className="d-flex justify-content-between align-items-start gap-2">
-                      <div>
-                        <div className="contact-item-title">Paciente</div>
-                        <div className="contact-item-name">{entry.nome}</div>
-                        <div className="contact-item-meta">
-                          {getPreview(entry.id)}
+                  <div key={entry.id} className="contact-item-row">
+                    <button
+                      type="button"
+                      className={`contact-item ${selectedPatientId === entry.id ? "active" : ""}`}
+                      onClick={() => onSelectPatient?.(entry.id)}
+                    >
+                      <div className="d-flex justify-content-between align-items-start gap-2">
+                        <div>
+                          <div className="contact-item-title">Paciente</div>
+                          <div className="contact-item-name">{entry.nome}</div>
+                          <div className="contact-item-meta">
+                            {getPreview(entry.id)}
+                          </div>
                         </div>
+                        {unread > 0 && (
+                          <span className="contact-unread-badge">
+                            {unread > 99 ? "99+" : unread}
+                          </span>
+                        )}
                       </div>
-                      {unread > 0 && (
-                        <span className="contact-unread-badge">
-                          {unread > 99 ? "99+" : unread}
-                        </span>
-                      )}
-                    </div>
-                  </button>
+                    </button>
+
+                    <button
+                      type="button"
+                      className="contact-delete-btn"
+                      onClick={() => onDeletePatientChat?.(entry.id)}
+                      title="Excluir chat"
+                      aria-label={`Excluir chat de ${entry.nome}`}
+                    >
+                      <i className="bi bi-trash3-fill"></i>
+                    </button>
+                  </div>
                 );
               })}
             </div>
@@ -1350,9 +1362,7 @@ function AdminChatPage({
                         <div
                           className={`support-chat-bubble ${isOwnMessage ? "user" : "ia"}`}
                         >
-                          <div className="support-chat-sender">
-                            {senderTitle}
-                          </div>
+                          <div className="support-chat-sender">{senderTitle}</div>
                           {item.text}
                         </div>
                       </div>

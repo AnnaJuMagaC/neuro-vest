@@ -20,6 +20,7 @@ import { getPatient } from "./api";
 const THEME_STORAGE_KEY = "neurovest-theme-mode";
 const USERS_STORAGE_KEY = "neurovest-users";
 const SESSION_STORAGE_KEY = "neurovest-session";
+const PATIENTS_STORAGE_KEY = "neurovest-patients";
 const HUMAN_CHAT_STORAGE_KEY = "neurovest-human-chat-threads";
 const HUMAN_CHAT_UNREAD_STORAGE_KEY = "neurovest-human-chat-unread";
 
@@ -130,6 +131,20 @@ function getInitialHumanChatUnread() {
   }
 }
 
+function getInitialPatients() {
+  if (typeof window === "undefined") return [];
+  const saved = localStorage.getItem(PATIENTS_STORAGE_KEY);
+  if (!saved) return [];
+
+  try {
+    const parsed = JSON.parse(saved);
+    if (!Array.isArray(parsed)) return [];
+    return parsed;
+  } catch {
+    return [];
+  }
+}
+
 const PAGE_TITLES = {
   clientes: {
     title: "Meus Clientes",
@@ -181,7 +196,7 @@ const PAGE_TITLES = {
 export default function App() {
   const [page, setPage] = useState("dashboard");
   const [sidebarOpen, setSidebarOpen] = useState(false);
-  const [patients, setPatients] = useState([]);
+  const [patients, setPatients] = useState(getInitialPatients);
   const [selectedPatientId, setSelectedPatientId] = useState(null);
   const [clock, setClock] = useState(new Date());
   const [users, setUsers] = useState(getInitialUsers);
@@ -219,12 +234,19 @@ export default function App() {
 
   useEffect(() => {
     getPatient().then((basePatient) => {
-      setPatients([basePatient]);
-      setSelectedPatientId(null);
+      setPatients((prev) => {
+        if (!basePatient) return prev;
+        if (prev.some((entry) => entry.id === basePatient.id)) return prev;
+        return [basePatient, ...prev];
+      });
     });
     const t = setInterval(() => setClock(new Date()), 1000);
     return () => clearInterval(t);
   }, []);
+
+  useEffect(() => {
+    localStorage.setItem(PATIENTS_STORAGE_KEY, JSON.stringify(patients));
+  }, [patients]);
 
   useEffect(() => {
     if (authRole === "patient" && !selectedPatientId && patients.length > 0) {
@@ -399,6 +421,28 @@ export default function App() {
     setSelectedPatientId(patientId);
   };
 
+  const handleDeletePatientChat = (patientId) => {
+    if (!patientId) return;
+
+    setPatients((prev) => prev.filter((entry) => entry.id !== patientId));
+
+    setHumanChatThreads((prev) => {
+      const next = { ...prev };
+      delete next[patientId];
+      return next;
+    });
+
+    setHumanChatUnread((prev) => {
+      const next = { ...prev };
+      delete next[patientId];
+      return next;
+    });
+
+    setSelectedPatientId((prevSelected) =>
+      prevSelected === patientId ? null : prevSelected,
+    );
+  };
+
   const handleSendHumanMessage = (text, senderRole) => {
     const content = String(text || "").trim();
     const activePatientId = patient?.id;
@@ -538,6 +582,7 @@ export default function App() {
               chat={activeHumanChat}
               threads={humanChatThreads}
               unreadByPatient={humanChatUnread}
+              onDeletePatientChat={handleDeletePatientChat}
               onSendMessage={(text) => handleSendHumanMessage(text, "admin")}
               currentUserName={currentUser?.name}
               directMode
@@ -597,6 +642,7 @@ export default function App() {
             chat={activeHumanChat}
             threads={humanChatThreads}
             unreadByPatient={humanChatUnread}
+            onDeletePatientChat={handleDeletePatientChat}
             onSendMessage={(text) => handleSendHumanMessage(text, "admin")}
             currentUserName={currentUser?.name}
           />
