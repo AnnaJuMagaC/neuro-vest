@@ -955,9 +955,16 @@ function ClientesPage({
 }
 
 // ===== CHAT HUMANO (PORTAL DE ACESSO) =====
-function ChatAccessPage({ patient, setPage, authRole, accessError }) {
+function ChatAccessPage({
+  patient,
+  setPage,
+  authRole,
+  accessError,
+  unreadCount = 0,
+}) {
   const isPatient = authRole === "patient";
   const isAdmin = authRole === "admin";
+  const unreadLabel = isAdmin ? "paciente" : "médico";
 
   return (
     <div>
@@ -989,79 +996,87 @@ function ChatAccessPage({ patient, setPage, authRole, accessError }) {
         </div>
       )}
 
+      {unreadCount > 0 && (
+        <div
+          className="alert-strip"
+          style={{ marginTop: accessError ? 12 : 0 }}
+        >
+          <i
+            className="bi bi-bell-fill"
+            style={{ color: "var(--accent-cyan)", fontSize: 18 }}
+          ></i>
+          <div style={{ fontSize: 13, color: "var(--text-primary)" }}>
+            Você tem {unreadCount} nova{unreadCount > 1 ? "s" : ""} mensagem
+            {unreadCount > 1 ? "ens" : ""} de {unreadLabel}.
+          </div>
+        </div>
+      )}
+
       <div className="row g-4">
-        <div className="col-12 col-lg-6">
-          <div
-            className="card-dark h-100 d-flex flex-column"
-            style={{ borderLeft: "3px solid var(--accent-cyan)" }}
-          >
-            <div className="section-header">Acesso do Paciente</div>
+        {isPatient && (
+          <div className="col-12">
             <div
-              style={{
-                fontSize: 14,
-                color: "var(--text-secondary)",
-                lineHeight: 1.6,
-              }}
+              className="card-dark h-100 d-flex flex-column"
+              style={{ borderLeft: "3px solid var(--accent-cyan)" }}
             >
-              Área para o paciente enviar mensagens para a equipe médica.
-            </div>
-            <div className="d-flex flex-wrap gap-2 mt-3 mb-4">
-              <span className="tag tag-blue">Enviar mensagens</span>
-              <span className="tag tag-green">Acompanhar retorno</span>
-            </div>
+              <div className="section-header">Acesso do Paciente</div>
+              <div
+                style={{
+                  fontSize: 14,
+                  color: "var(--text-secondary)",
+                  lineHeight: 1.6,
+                }}
+              >
+                Área para o paciente enviar mensagens para a equipe médica.
+              </div>
+              <div className="d-flex flex-wrap gap-2 mt-3 mb-4">
+                <span className="tag tag-blue">Enviar mensagens</span>
+                <span className="tag tag-green">Acompanhar retorno</span>
+              </div>
 
-            <button
-              type="button"
-              className="btn-neuro mt-auto"
-              disabled={!isPatient}
-              onClick={() => setPage("chatPaciente")}
-              title={
-                !isPatient
-                  ? "Apenas usuários autenticados como paciente podem entrar."
-                  : ""
-              }
-            >
-              Entrar como Paciente
-            </button>
+              <button
+                type="button"
+                className="btn-neuro mt-auto"
+                onClick={() => setPage("chatPaciente")}
+              >
+                Entrar como Paciente
+              </button>
+            </div>
           </div>
-        </div>
+        )}
 
-        <div className="col-12 col-lg-6">
-          <div
-            className="card-dark h-100 d-flex flex-column"
-            style={{ borderLeft: "3px solid var(--accent-purple)" }}
-          >
-            <div className="section-header">Acesso Médico/Admin</div>
+        {isAdmin && (
+          <div className="col-12">
             <div
-              style={{
-                fontSize: 14,
-                color: "var(--text-secondary)",
-                lineHeight: 1.6,
-              }}
+              className="card-dark h-100 d-flex flex-column"
+              style={{ borderLeft: "3px solid var(--accent-purple)" }}
             >
-              Área da equipe para leitura e resposta das mensagens dos
-              pacientes.
-            </div>
-            <div className="d-flex flex-wrap gap-2 mt-3 mb-4">
-              <span className="tag tag-purple">Responder pacientes</span>
-              <span className="tag tag-orange">Painel clínico</span>
-            </div>
+              <div className="section-header">Acesso Médico/Admin</div>
+              <div
+                style={{
+                  fontSize: 14,
+                  color: "var(--text-secondary)",
+                  lineHeight: 1.6,
+                }}
+              >
+                Área da equipe para leitura e resposta das mensagens dos
+                pacientes.
+              </div>
+              <div className="d-flex flex-wrap gap-2 mt-3 mb-4">
+                <span className="tag tag-purple">Responder pacientes</span>
+                <span className="tag tag-orange">Painel clínico</span>
+              </div>
 
-            <button
-              type="button"
-              className="btn-neuro mt-auto"
-              disabled={!isAdmin}
-              onClick={() => setPage("chatAdmin")}
-              title={
-                !isAdmin
-                  ? "Apenas usuários autenticados como médico/admin podem entrar."
-                  : ""
-              }
-            >
-              Entrar como Médico/Admin
-            </button>
+              <button
+                type="button"
+                className="btn-neuro mt-auto"
+                onClick={() => setPage("chatAdmin")}
+              >
+                Entrar como Médico/Admin
+              </button>
+            </div>
           </div>
-        </div>
+        )}
       </div>
 
       <div
@@ -1083,25 +1098,34 @@ function ChatAccessPage({ patient, setPage, authRole, accessError }) {
   );
 }
 
-function PacienteChatPage({ patient, setPage, onLogout }) {
+function PacienteChatPage({
+  patient,
+  setPage,
+  onLogout,
+  chat = [],
+  onSendMessage,
+  currentUserName,
+  directMode = false,
+}) {
   const [mensagem, setMensagem] = useState("");
-  const [chat, setChat] = useState([
-    {
-      id: 1,
-      sender: "ia",
-      text: "Canal humano ativo. Escreva sua mensagem para o médico.",
-    },
-  ]);
+  const mensagensVisiveis =
+    chat.length > 0
+      ? chat
+      : [
+          {
+            id: "welcome-patient",
+            sender: "system",
+            text: "Canal humano ativo. Escreva sua mensagem para o médico.",
+          },
+        ];
 
   const enviarMensagem = (texto) => {
     const conteudo = texto.trim();
     if (!conteudo) return;
 
-    const idBase = Date.now();
-    setChat((prev) => [
-      ...prev,
-      { id: `${idBase}-p`, sender: "user", text: conteudo },
-    ]);
+    if (typeof onSendMessage === "function") {
+      onSendMessage(conteudo);
+    }
     setMensagem("");
   };
 
@@ -1120,13 +1144,15 @@ function PacienteChatPage({ patient, setPage, onLogout }) {
             <span className="tag tag-blue">
               Paciente: {patient?.nome || "Não identificado"}
             </span>
-            <button
-              type="button"
-              className="btn-neuro"
-              onClick={() => setPage("contatos")}
-            >
-              Voltar ao Portal
-            </button>
+            {!directMode && (
+              <button
+                type="button"
+                className="btn-neuro"
+                onClick={() => setPage("contatos")}
+              >
+                Voltar ao Portal
+              </button>
+            )}
             <button type="button" className="btn-neuro" onClick={onLogout}>
               Logout
             </button>
@@ -1138,18 +1164,25 @@ function PacienteChatPage({ patient, setPage, onLogout }) {
         <div className="section-header">Chat com equipe médica</div>
 
         <div className="support-chat-window">
-          {chat.map((item) => (
-            <div
-              key={item.id}
-              className={`support-chat-row ${item.sender === "user" ? "user" : "ia"}`}
-            >
+          {mensagensVisiveis.map((item) => {
+            const isOwnMessage = item.sender === "patient";
+            const senderTitle = isOwnMessage
+              ? currentUserName || "Você"
+              : item.senderName || "Médico/Admin";
+            return (
               <div
-                className={`support-chat-bubble ${item.sender === "user" ? "user" : "ia"}`}
+                key={item.id}
+                className={`support-chat-row ${isOwnMessage ? "user" : "ia"}`}
               >
-                {item.text}
+                <div
+                  className={`support-chat-bubble ${isOwnMessage ? "user" : "ia"}`}
+                >
+                  <div className="support-chat-sender">{senderTitle}</div>
+                  {item.text}
+                </div>
               </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
 
         <form
@@ -1175,26 +1208,52 @@ function PacienteChatPage({ patient, setPage, onLogout }) {
   );
 }
 
-function AdminChatPage({ patient, setPage, onLogout }) {
+function AdminChatPage({
+  patient,
+  patients = [],
+  selectedPatientId,
+  onSelectPatient,
+  onDeletePatientChat,
+  setPage,
+  onLogout,
+  chat = [],
+  threads = {},
+  unreadByPatient = {},
+  onSendMessage,
+  currentUserName,
+  directMode = false,
+}) {
   const [mensagem, setMensagem] = useState("");
-  const [chat, setChat] = useState([
-    {
-      id: 1,
-      sender: "ia",
-      text: `Paciente ${patient?.nome || "não identificado"} iniciou conversa.`,
-    },
-  ]);
+  const mensagensVisiveis =
+    chat.length > 0
+      ? chat
+      : [
+          {
+            id: "welcome-admin",
+            sender: "system",
+            text: `Paciente ${patient?.nome || "não identificado"} iniciou conversa.`,
+          },
+        ];
 
   const enviarResposta = (texto) => {
     const conteudo = texto.trim();
-    if (!conteudo) return;
+    if (!conteudo || !patient) return;
 
-    const idBase = Date.now();
-    setChat((prev) => [
-      ...prev,
-      { id: `${idBase}-m`, sender: "user", text: conteudo },
-    ]);
+    if (typeof onSendMessage === "function") {
+      onSendMessage(conteudo);
+    }
     setMensagem("");
+  };
+
+  const getPreview = (patientId) => {
+    const thread = threads[patientId] || [];
+    const last = thread[thread.length - 1];
+    if (!last) return "Sem mensagens ainda";
+    const sender =
+      last.senderName || (last.sender === "admin" ? "Médico" : "Paciente");
+    const text = String(last.text || "");
+    const clipped = text.length > 40 ? `${text.slice(0, 40)}...` : text;
+    return `${sender}: ${clipped}`;
   };
 
   return (
@@ -1204,20 +1263,22 @@ function AdminChatPage({ patient, setPage, onLogout }) {
           <div>
             <div className="section-header mb-2">Canal Médico/Admin</div>
             <div style={{ fontSize: 14, color: "var(--text-secondary)" }}>
-              Esta tela é exclusiva para leitura e resposta da equipe clínica.
+              Conversas dos pacientes em um único painel.
             </div>
           </div>
           <div className="d-flex gap-2 flex-wrap">
             <span className="tag tag-purple">
-              Paciente ativo: {patient?.nome || "Não identificado"}
+              Paciente ativo: {patient?.nome || "Selecione um paciente"}
             </span>
-            <button
-              type="button"
-              className="btn-neuro"
-              onClick={() => setPage("contatos")}
-            >
-              Voltar ao Portal
-            </button>
+            {!directMode && (
+              <button
+                type="button"
+                className="btn-neuro"
+                onClick={() => setPage("contatos")}
+              >
+                Voltar ao Portal
+              </button>
+            )}
             <button type="button" className="btn-neuro" onClick={onLogout}>
               Logout
             </button>
@@ -1225,42 +1286,114 @@ function AdminChatPage({ patient, setPage, onLogout }) {
         </div>
       </div>
 
-      <div className="card-dark">
-        <div className="section-header">Conversa com paciente</div>
+      <div className="row g-3">
+        <div className="col-12 col-lg-4">
+          <div className="card-dark h-100">
+            <div className="section-header">Pacientes</div>
+            <div className="contact-list">
+              {patients.length === 0 && (
+                <div style={{ fontSize: 13, color: "var(--text-muted)" }}>
+                  Nenhum paciente cadastrado.
+                </div>
+              )}
 
-        <div className="support-chat-window">
-          {chat.map((item) => (
-            <div
-              key={item.id}
-              className={`support-chat-row ${item.sender === "user" ? "user" : "ia"}`}
-            >
-              <div
-                className={`support-chat-bubble ${item.sender === "user" ? "user" : "ia"}`}
-              >
-                {item.text}
-              </div>
+              {patients.map((entry) => {
+                const unread = unreadByPatient[entry.id]?.admin || 0;
+                return (
+                  <div key={entry.id} className="contact-item-row">
+                    <button
+                      type="button"
+                      className={`contact-item ${selectedPatientId === entry.id ? "active" : ""}`}
+                      onClick={() => onSelectPatient?.(entry.id)}
+                    >
+                      <div className="d-flex justify-content-between align-items-start gap-2">
+                        <div>
+                          <div className="contact-item-title">Paciente</div>
+                          <div className="contact-item-name">{entry.nome}</div>
+                          <div className="contact-item-meta">
+                            {getPreview(entry.id)}
+                          </div>
+                        </div>
+                        {unread > 0 && (
+                          <span className="contact-unread-badge">
+                            {unread > 99 ? "99+" : unread}
+                          </span>
+                        )}
+                      </div>
+                    </button>
+
+                    <button
+                      type="button"
+                      className="contact-delete-btn"
+                      onClick={() => onDeletePatientChat?.(entry.id)}
+                      title="Excluir chat"
+                      aria-label={`Excluir chat de ${entry.nome}`}
+                    >
+                      <i className="bi bi-trash3-fill"></i>
+                    </button>
+                  </div>
+                );
+              })}
             </div>
-          ))}
+          </div>
         </div>
 
-        <form
-          className="support-input-row mt-3"
-          onSubmit={(e) => {
-            e.preventDefault();
-            enviarResposta(mensagem);
-          }}
-        >
-          <input
-            type="text"
-            className="support-input"
-            placeholder="Digite a resposta para o paciente..."
-            value={mensagem}
-            onChange={(e) => setMensagem(e.target.value)}
-          />
-          <button type="submit" className="btn-neuro">
-            Responder
-          </button>
-        </form>
+        <div className="col-12 col-lg-8">
+          <div className="card-dark h-100">
+            <div className="section-header">Conversa com paciente</div>
+
+            {!patient ? (
+              <div style={{ fontSize: 13, color: "var(--text-muted)" }}>
+                Selecione um paciente na lista para abrir a conversa.
+              </div>
+            ) : (
+              <>
+                <div className="support-chat-window">
+                  {mensagensVisiveis.map((item) => {
+                    const isOwnMessage = item.sender === "admin";
+                    const senderTitle = isOwnMessage
+                      ? currentUserName || "Você"
+                      : item.senderName || patient?.nome || "Paciente";
+                    return (
+                      <div
+                        key={item.id}
+                        className={`support-chat-row ${isOwnMessage ? "user" : "ia"}`}
+                      >
+                        <div
+                          className={`support-chat-bubble ${isOwnMessage ? "user" : "ia"}`}
+                        >
+                          <div className="support-chat-sender">
+                            {senderTitle}
+                          </div>
+                          {item.text}
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+
+                <form
+                  className="support-input-row mt-3"
+                  onSubmit={(e) => {
+                    e.preventDefault();
+                    enviarResposta(mensagem);
+                  }}
+                >
+                  <input
+                    type="text"
+                    className="support-input"
+                    placeholder={`Digite a resposta para ${patient.nome || "o paciente"}...`}
+                    value={mensagem}
+                    onChange={(e) => setMensagem(e.target.value)}
+                  />
+                  <button type="submit" className="btn-neuro">
+                    Responder
+                  </button>
+                </form>
+              </>
+            )}
+          </div>
+        </div>
       </div>
     </div>
   );

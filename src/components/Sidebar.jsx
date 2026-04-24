@@ -1,14 +1,14 @@
 import React from "react";
 
 const navItems = [
-  { icon: 'bi-grid-1x2-fill', label: 'Dashboard', page: 'dashboard' },
-  { icon: 'bi-heart-pulse-fill', label: 'Monit. Cardíaco', page: 'cardio' },
-  { icon: 'bi-activity', label: 'Monit. Neural', page: 'neural' },
-  { icon: 'bi-shield-exclamation', label: 'Risco Vascular', page: 'risco' },
-  { icon: 'bi-clock-history', label: 'Histórico', page: 'historico' },
-  { icon: 'bi-cpu', label: 'Dispositivos', page: 'dispositivos' },
-  { icon: 'bi-person-lines-fill', label: 'Paciente', page: 'paciente' },
-  { icon: 'bi-chat-dots-fill', label: 'IA de Suporte', page: 'suporte' },
+  { icon: "bi-grid-1x2-fill", label: "Dashboard", page: "dashboard" },
+  { icon: "bi-heart-pulse-fill", label: "Monit. Cardíaco", page: "cardio" },
+  { icon: "bi-activity", label: "Monit. Neural", page: "neural" },
+  { icon: "bi-shield-exclamation", label: "Risco Vascular", page: "risco" },
+  { icon: "bi-clock-history", label: "Histórico", page: "historico" },
+  { icon: "bi-cpu", label: "Dispositivos", page: "dispositivos" },
+  { icon: "bi-person-lines-fill", label: "Paciente", page: "paciente" },
+  { icon: "bi-chat-dots-fill", label: "IA de Suporte", page: "suporte" },
 ];
 
 export default function Sidebar({
