@@ -1075,7 +1075,13 @@ function ChatAccessPage({ patient, setPage, authRole, accessError }) {
   );
 }
 
-function PacienteChatPage({ patient, setPage, onLogout, chat = [], onSendMessage }) {
+function PacienteChatPage({
+  patient,
+  setPage,
+  onLogout,
+  chat = [],
+  onSendMessage,
+}) {
   const [mensagem, setMensagem] = useState("");
   const mensagensVisiveis =
     chat.length > 0
@@ -1171,7 +1177,13 @@ function PacienteChatPage({ patient, setPage, onLogout, chat = [], onSendMessage
   );
 }
 
-function AdminChatPage({ patient, setPage, onLogout, chat = [], onSendMessage }) {
+function AdminChatPage({
+  patient,
+  setPage,
+  onLogout,
+  chat = [],
+  onSendMessage,
+}) {
   const [mensagem, setMensagem] = useState("");
   const mensagensVisiveis =
     chat.length > 0
