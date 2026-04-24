@@ -52,6 +52,10 @@ html[data-theme="light"] {
   color-scheme: light;
 }
 
+html[data-theme="light"] .theme-label {
+  color: #ffffff;
+}
+
 * {
   box-sizing: border-box;
   margin: 0;
@@ -105,6 +109,7 @@ body::before {
 /* Sidebar */
 .sidebar {
   width: 260px;
+  height: 100vh;
   min-height: 100vh;
   background: linear-gradient(
     180deg,
@@ -118,6 +123,8 @@ body::before {
   z-index: 100;
   display: flex;
   flex-direction: column;
+  overflow-y: auto;
+  overflow-x: hidden;
   transition: transform 0.3s ease;
 }
 
@@ -198,9 +205,13 @@ body::before {
   text-align: center;
 }
 
+.support-nav-item {
+  margin-bottom: 88px;
+}
+
 .sidebar-footer {
   margin-top: auto;
-  padding: 16px 20px;
+  padding: 16px 20px 20px;
   border-top: 1px solid var(--border);
 }
 
