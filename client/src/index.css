@@ -924,6 +924,18 @@ body::before {
   align-items: center;
   justify-content: center;
   padding: 20px;
+  background: linear-gradient(135deg, #91b6cb 0%, #c3adec 100%);
+}
+
+.auth-login-actions .btn-neuro {
+  background: linear-gradient(90deg, #7aa3c04b 0%, #b29adf6d 100%);
+  color: #6645ac;
+  border-color: #6645ac;
+}
+
+.auth-login-actions .btn-neuro:hover {
+  background: linear-gradient(90deg, #7aa3c04b 0%, #b29adf6d 100%);
+  box-shadow: 0 0 12px #6645ac;
 }
 
 .auth-card {
