@@ -43,7 +43,10 @@ export default function AuthPage({ onLogin, onRegister, onQuickAccess }) {
         </div>
 
         {step === "login" && (
-          <form className="d-flex flex-column gap-2" onSubmit={submitLogin}>
+          <form
+            className="d-flex flex-column gap-2 auth-login-actions"
+            onSubmit={submitLogin}
+          >
             <input
               type="email"
               className="support-input"
