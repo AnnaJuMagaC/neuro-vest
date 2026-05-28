@@ -24,12 +24,7 @@ segura e escalável.
 
 <br><br>
 
-<img src="https://img.shields.io/badge/api-restful-ECEFF1?style=flat-square"/>
-<img src="https://img.shields.io/badge/arquitetura-clean%20architecture-F5E6CC?style=flat-square"/>
-<img src="https://img.shields.io/badge/design-minimalista-F3E5F5?style=flat-square"/>
-<img src="https://img.shields.io/badge/version-1.0-C5CAE9?style=flat-square"/>
 
-</div>
 
 ---
 
