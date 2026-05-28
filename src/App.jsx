@@ -4,6 +4,7 @@ import Dashboard from "./pages/Dashboard";
 import CardioPage from "./pages/CardioPage";
 import NeuralPage from "./pages/NeuralPage";
 import AuthPage from "./pages/AuthPage";
+import PerfilPaciente from "./pages/PerfilPaciente";
 import {
   ClientesPage,
   RiscoPage,
@@ -174,6 +175,10 @@ const PAGE_TITLES = {
   paciente: {
     title: "Dados do Paciente",
     subtitle: "Ficha clínica e condições",
+  },
+  perfilpaciente: {
+    title: "Perfil do Paciente",
+    subtitle: "Informações pessoais e medidas antropométricas",
   },
   contatos: {
     title: "Acesso ao Chat Humano",
@@ -556,6 +561,8 @@ export default function App() {
         return <DispositivosPage />;
       case "paciente":
         return <PacientePage patient={patient} />;
+      case "perfilpaciente":
+        return <PerfilPaciente patient={patient} />;
       case "contatos":
         if (authRole === "patient") {
           return (

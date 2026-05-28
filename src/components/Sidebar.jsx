@@ -8,6 +8,7 @@ const navItems = [
   { icon: "bi-clock-history", label: "Histórico", page: "historico" },
   { icon: "bi-cpu", label: "Dispositivos", page: "dispositivos" },
   { icon: "bi-person-lines-fill", label: "Paciente", page: "paciente" },
+  { icon: "bi-person-vcard-fill", label: "Perfil", page: "perfilpaciente" },
   { icon: "bi-chat-dots-fill", label: "IA de Suporte", page: "suporte" },
 ];
 
@@ -72,7 +73,7 @@ export default function Sidebar({
             ))}
 
             <div className="nav-section-label">Sistema</div>
-            {navItems.slice(4, 7).map((item) => (
+            {navItems.slice(4, 8).map((item) => (
               <div
                 key={item.page}
                 className={`nav-item ${currentPage === item.page ? "active" : ""}`}
@@ -87,7 +88,7 @@ export default function Sidebar({
             ))}
 
             <div className="nav-section-label">Apoio</div>
-            {navItems.slice(7).map((item) => (
+            {navItems.slice(8).map((item) => (
               <div
                 key={item.page}
                 className={`nav-item ${currentPage === item.page ? "active" : ""}`}
