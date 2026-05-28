@@ -1,4 +1,4 @@
-````md
+
 <div align="center">
 
 <img src="assets/neurovest-banner.png" width="100%"/>
