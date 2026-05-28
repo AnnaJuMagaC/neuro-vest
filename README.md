@@ -1,155 +1,106 @@
 
 <div align="center">
 
-<br><br>
-
 # 🧠 NeuroVest
+
+<img src="assets/banner.png" width="100%"/>
+
+<br>
 
 ### tecnologia • inteligência • inovação
 
 <p align="center">
-Uma plataforma moderna desenvolvida para integrar <b>Inteligência Artificial</b>,
+Uma plataforma moderna desenvolvida para integrar Inteligência Artificial,
 automação e gerenciamento inteligente em uma experiência elegante,
 segura e escalável.
 </p>
 
 <br>
 
-<img src="https://img.shields.io/badge/status-em%20desenvolvimento-E8B7D4?style=for-the-badge"/>
-<img src="https://img.shields.io/badge/asp.net%20core-8.0-C8A2C8?style=for-the-badge&logo=dotnet&logoColor=white"/>
-<img src="https://img.shields.io/badge/c%23-B39DDB?style=for-the-badge&logo=csharp&logoColor=white"/>
-<img src="https://img.shields.io/badge/sql%20server-D7CCC8?style=for-the-badge&logo=microsoftsqlserver&logoColor=black"/>
-<img src="https://img.shields.io/badge/swagger-F8BBD0?style=for-the-badge&logo=swagger&logoColor=black"/>
-<img src="https://img.shields.io/badge/inteligência%20artificial-D1C4E9?style=for-the-badge"/>
+<img src="https://img.shields.io/badge/status-em%20desenvolvimento-E8C1D9?style=for-the-badge"/>
+<img src="https://img.shields.io/badge/asp.net%20core-8.0-CDB4DB?style=for-the-badge&logo=dotnet&logoColor=white"/>
+<img src="https://img.shields.io/badge/c%23-B8C0FF?style=for-the-badge&logo=csharp&logoColor=white"/>
+<img src="https://img.shields.io/badge/sql%20server-F8EDEB?style=for-the-badge&logo=microsoftsqlserver&logoColor=black"/>
+<img src="https://img.shields.io/badge/swagger-F9D5E5?style=for-the-badge&logo=swagger&logoColor=black"/>
+<img src="https://img.shields.io/badge/inteligência%20artificial-D8E2DC?style=for-the-badge"/>
 
 <br><br>
-
-
-
----
-
-# ✦ Sobre o Projeto
-
-A **NeuroVest** é uma plataforma desenvolvida com foco em inovação,
-tecnologia e Inteligência Artificial, criada para transformar processos
-tradicionais em experiências inteligentes, automatizadas e organizadas.
-
-O projeto une arquitetura moderna, segurança, desempenho e escalabilidade,
-permitindo o gerenciamento eficiente de informações e fluxos automatizados
-dentro de um ambiente tecnológico sofisticado.
-
-A proposta da NeuroVest é oferecer uma base sólida para aplicações modernas,
-utilizando recursos inteligentes capazes de otimizar tarefas,
-processar informações e facilitar tomadas de decisão.
-
-Além do foco tecnológico, o projeto também busca entregar uma experiência visual refinada,
-minimalista e profissional, transmitindo inovação em cada detalhe da aplicação.
-
-<br>
-
-<div align="center">
-
-```bash
-tecnologia → automação → inteligência → inovação
-````
 
 </div>
 
 ---
 
-# ✦ Objetivo da Plataforma
+# ✦ Descrição
 
-A NeuroVest foi idealizada para integrar recursos inteligentes
-em uma estrutura moderna e escalável, permitindo:
+A **NeuroVest** é uma plataforma desenvolvida para unir tecnologia,
+automação e Inteligência Artificial em uma solução moderna,
+minimalista e altamente escalável.
 
-* ✦ automação de processos
-* ✦ gerenciamento inteligente de informações
-* ✦ integração com Inteligência Artificial
-* ✦ organização de dados e fluxos
-* ✦ estrutura preparada para expansão futura
-* ✦ arquitetura limpa e profissional
+O projeto foi criado com foco em desempenho, segurança,
+organização e experiência visual refinada,
+seguindo padrões modernos de desenvolvimento back-end
+e arquitetura profissional.
 
-A aplicação foi construída seguindo boas práticas de desenvolvimento,
-garantindo manutenção facilitada, segurança e crescimento contínuo.
+Seu principal objetivo é transformar processos tradicionais
+em fluxos inteligentes e automatizados,
+permitindo integração eficiente de dados,
+gerenciamento de informações e processamento inteligente.
 
 ---
 
-# ✦ Inteligência Artificial
+# 🧠 Módulo de Inteligência Artificial
 
-O principal diferencial da NeuroVest é sua integração com Inteligência Artificial,
-responsável por automatizar análises, processamentos e respostas inteligentes.
+O principal diferencial da NeuroVest é sua integração
+com Inteligência Artificial,
+responsável por automatizar análises,
+processamentos e respostas inteligentes.
 
-A IA atua como núcleo tecnológico da plataforma,
-permitindo maior eficiência, agilidade e otimização de processos.
+---
 
-## ⚙️ Fluxo Inteligente
+## ⚙️ Como Funciona
 
-```bash
-usuário → api → processamento → inteligência artificial → resposta estruturada
-```
+1. O usuário envia informações ou arquivos
+2. A API processa os dados recebidos
+3. A Inteligência Artificial interpreta o conteúdo
+4. O sistema retorna respostas estruturadas e automatizadas
+
+---
 
 ## ✦ Recursos Inteligentes
 
-* ✅ processamento automatizado
-* ✅ respostas inteligentes
-* ✅ integração com IA
-* ✅ otimização de tarefas
-* ✅ estrutura escalável
-* ✅ automação de fluxos
-* ✅ gerenciamento eficiente de dados
+- ✅ Processamento automatizado
+- ⚡ Integração com Inteligência Artificial
+- 📊 Análises inteligentes
+- 🔍 Otimização de processos
+- 🧠 Estrutura preparada para expansão futura
 
 ---
 
-# ✦ Tecnologias Utilizadas
+# ⚙️ Tecnologias Utilizadas
 
 ## 🔹 Back-end
 
-* ASP.NET Core 8
-* C#
-* REST API
+- ASP.NET Core 8
+- C#
+- REST API
 
 ## 🔹 Banco de Dados
 
-* Microsoft SQL Server
-* Entity Framework Core
+- Microsoft SQL Server
+- Entity Framework Core
 
 ## 🔹 Segurança
 
-* JWT Bearer Token
-* ASP.NET Identity
+- JWT Bearer Token
+- ASP.NET Identity
 
 ## 🔹 Documentação
 
-* Swagger / OpenAPI
-
-## 🔹 Arquitetura
-
-* Clean Architecture
-* Estrutura em camadas
-* Separação de responsabilidades
+- Swagger / OpenAPI
 
 ---
 
-# ✦ Arquitetura do Sistema
-
-```bash
-Controller → Service → Repository → Database
-```
-
-A NeuroVest segue uma arquitetura organizada em camadas,
-facilitando manutenção, crescimento da aplicação e separação de responsabilidades.
-
-Essa estrutura proporciona:
-
-* maior organização do código
-* facilidade de manutenção
-* escalabilidade
-* melhor desempenho da aplicação
-* desenvolvimento mais seguro e profissional
-
----
-
-# ✦ Estrutura do Projeto
+# 📦 Estrutura do Projeto
 
 ```bash
 /NeuroVest
@@ -161,19 +112,18 @@ Essa estrutura proporciona:
 ├── Properties/
 ├── Program.cs
 ├── appsettings.json
-├── appsettings.Development.json
 └── NeuroVest.csproj
 ```
 
 ---
 
-# ✦ Como Executar o Projeto
+# 🚀 Como Executar o Projeto
 
-## 🔹 Pré-requisitos
+## 🔸 Requisitos
 
-* .NET 8 SDK
-* SQL Server ou LocalDB
-* Visual Studio 2022 ou VS Code
+- .NET 8 SDK
+- SQL Server
+- Visual Studio ou VS Code
 
 ---
 
@@ -189,9 +139,7 @@ cd NeuroVest
 
 ---
 
-## 🔹 Configurar Banco de Dados
-
-No arquivo `appsettings.json`:
+## 🔹 Configurar Banco
 
 ```json
 "ConnectionStrings": {
@@ -209,7 +157,7 @@ dotnet ef database update
 
 ---
 
-## 🔹 Executar Aplicação
+## 🔹 Executar Projeto
 
 ```bash
 dotnet run
@@ -217,54 +165,56 @@ dotnet run
 
 ---
 
+# 📚 Documentação
+
+## 🔑 Autenticação
+
+A API utiliza:
+
+- JWT Bearer Token
+- ASP.NET Identity
+
+---
+
+## 📄 Swagger
+
+```bash
+http://localhost:5000/swagger
+```
+
+---
+
 # ✦ Funcionalidades
 
-| Funcionalidade             | Status |
-| -------------------------- | ------ |
-| Sistema de autenticação    | ✅      |
-| Integração com IA          | ✅      |
-| API RESTful                | ✅      |
-| Banco de dados relacional  | ✅      |
-| Processamento automatizado | ✅      |
-| Estrutura escalável        | ✅      |
-| Dashboard administrativo   | 🚧     |
-| Relatórios inteligentes    | 🚧     |
-| Upload de arquivos         | 🚧     |
+| Funcionalidade | Status |
+|---|---|
+| Sistema de autenticação | ✅ |
+| Integração com IA | ✅ |
+| API RESTful | ✅ |
+| Banco de dados relacional | ✅ |
+| Processamento automatizado | ✅ |
+| Dashboard administrativo | 🚧 |
 
 ---
 
 # ✦ Roadmap
 
-* [x] Estrutura inicial da API
-* [x] Integração com banco de dados
-* [x] JWT Authentication
-* [x] Estrutura em camadas
-* [x] Integração com Inteligência Artificial
-* [ ] Dashboard administrativo
-* [ ] Histórico de atividades
-* [ ] Upload de arquivos
-* [ ] Relatórios inteligentes
-* [ ] Deploy em nuvem
-* [ ] Sistema avançado de automações
+- [x] Estrutura inicial da API
+- [x] Integração com banco de dados
+- [x] JWT Authentication
+- [x] Integração com Inteligência Artificial
+- [ ] Dashboard administrativo
+- [ ] Upload de arquivos
+- [ ] Relatórios inteligentes
+- [ ] Deploy em nuvem
 
 ---
 
-# ✦ Preview do Projeto
+# ✦ Preview
 
 <p align="center">
   <img src="assets/preview.png" width="100%"/>
 </p>
-
----
-
-# ✦ Diferenciais da NeuroVest
-
-✨ Interface moderna e minimalista
-✨ Estrutura organizada e escalável
-✨ Integração com Inteligência Artificial
-✨ Arquitetura profissional
-✨ Segurança e autenticação robusta
-✨ Projeto preparado para crescimento futuro
 
 ---
 
@@ -274,22 +224,19 @@ dotnet run
 
 ## NeuroVest Development Team
 
-💻 Desenvolvimento de Sistemas
+💻 Desenvolvimento de Sistemas  
 🧠 Tecnologia • Inteligência Artificial • Inovação
 
 </div>
 
----
-
-# ✦ Licença
-
-Este projeto está licenciado sob a Licença MIT.
+<br>
 
 <div align="center">
 
-<img src="https://img.shields.io/badge/license-MIT-E8B7D4?style=for-the-badge"/>
+<img src="https://img.shields.io/badge/license-MIT-E8C1D9?style=for-the-badge"/>
 
 </div>
-```
+````
+
 
 
