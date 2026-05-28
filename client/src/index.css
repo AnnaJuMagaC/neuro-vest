@@ -29,7 +29,7 @@ html[data-theme="dark"] {
 }
 
 html[data-theme="light"] {
-  --bg-deep: #ffffff;
+  --bg-deep: #d3cae2;
   --bg-card: #ffffff;
   --bg-panel: #f1f6fb;
   --bg-gradient-top: #8dc1df;
@@ -86,6 +86,10 @@ body::before {
   z-index: 0;
 }
 
+html[data-theme="light"] body::before {
+  background: #faf8f3;
+}
+
 #root {
   position: relative;
   z-index: 1;
@@ -104,6 +108,18 @@ body::before {
 }
 ::-webkit-scrollbar-thumb:hover {
   background: var(--accent-blue);
+}
+
+/* Scrollbar - modo claro */
+html[data-theme="light"] ::-webkit-scrollbar-track {
+  background: #d3cae2;
+}
+html[data-theme="light"] ::-webkit-scrollbar-thumb {
+  background: #d3cae2;
+  border-radius: 3px;
+}
+html[data-theme="light"] ::-webkit-scrollbar-thumb:hover {
+  background: #9075c3;
 }
 
 /* Sidebar */
@@ -126,6 +142,31 @@ body::before {
   overflow-y: auto;
   overflow-x: hidden;
   transition: transform 0.3s ease;
+}
+
+html[data-theme="light"] .sidebar {
+  background: linear-gradient(
+    180deg,
+    #91b6cb 0%,
+    #9075c3 120%
+  );
+}
+
+html[data-theme="light"] .sidebar::-webkit-scrollbar-thumb {
+  background: #d3cae2;
+}
+
+html[data-theme="light"] .sidebar::-webkit-scrollbar-thumb:hover {
+  background: #9075c3;
+}
+
+html[data-theme="light"] .logo-sub,
+html[data-theme="light"] .nav-section-label {
+  color: #ffffff;
+}
+
+html[data-theme="light"] .logo-title {
+  color: #6645ac;
 }
 
 .sidebar-logo {
@@ -193,8 +234,12 @@ body::before {
   color: var(--text-primary);
 }
 
+html[data-theme="light"] .nav-item.active {
+  color: #6645ac;
+}
+
 .nav-item.active {
-  background: linear-gradient(90deg, #8dc1df33, transparent);
+  background: linear-gradient(90deg, #9075c386, transparent);
   border-left-color: var(--accent-purple);
   color: var(--accent-violet);
 }
@@ -925,6 +970,19 @@ body::before {
   justify-content: center;
   padding: 20px;
   background: linear-gradient(135deg, #91b6cb 0%, #c3adec 100%);
+}
+
+html[data-theme="dark"] .auth-shell {
+  background: linear-gradient(135deg, #1f395c 0%, #6645ac 100%);
+}
+
+html[data-theme="dark"] .auth-login-actions .btn-neuro {
+  color: #0d2443;
+  border-color: #0d2443;
+}
+
+html[data-theme="dark"] .auth-login-actions .btn-neuro:hover {
+  box-shadow: 0 0 12px #0d2443;
 }
 
 .auth-login-actions .btn-neuro {
