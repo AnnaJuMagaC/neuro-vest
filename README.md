@@ -1,8 +1,6 @@
 
 <div align="center">
 
-<img src="assets/neurovest-banner.png" width="100%"/>
-
 <br><br>
 
 # 🧠 NeuroVest
