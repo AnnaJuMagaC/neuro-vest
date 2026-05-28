@@ -89,35 +89,7 @@ usuário → api → processamento → inteligência artificial → resposta est
 
 ---
 
-# ✦ Como Executar
 
-## 🔹 Pré-requisitos
-
-- .NET 8 SDK
-- SQL Server
-- Visual Studio ou VS Code
-
----
-
-## 🔹 Clonar Repositório
-
-```bash
-git clone LINK_DO_REPOSITORIO
-```
-
-```bash
-cd NeuroVest
-```
-
----
-
-## 🔹 Executar Projeto
-
-```bash
-dotnet run
-```
-
----
 
 # ✦ Preview do Projeto
 
