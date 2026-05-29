@@ -87,7 +87,7 @@ export default function AuthPage({ onLogin, onRegister, onQuickAccess }) {
         )}
 
         {step === "selectRole" && (
-          <div className="d-flex flex-column gap-2">
+          <div className="d-flex flex-column gap-2 auth-login-actions">
             <div className="auth-label">Escolha seu tipo de cadastro</div>
             <button
               type="button"
@@ -124,7 +124,7 @@ export default function AuthPage({ onLogin, onRegister, onQuickAccess }) {
 
         {step === "registerPatient" && (
           <form
-            className="d-flex flex-column gap-2"
+            className="d-flex flex-column gap-2 auth-login-actions"
             onSubmit={submitPatientRegister}
           >
             <div className="auth-label">Cadastro de paciente</div>
@@ -186,7 +186,7 @@ export default function AuthPage({ onLogin, onRegister, onQuickAccess }) {
 
         {step === "registerDoctor" && (
           <form
-            className="d-flex flex-column gap-2"
+            className="d-flex flex-column gap-2 auth-login-actions"
             onSubmit={submitDoctorRegister}
           >
             <div className="auth-label">Cadastro de médico</div>
