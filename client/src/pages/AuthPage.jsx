@@ -16,22 +16,25 @@ export default function AuthPage({ onLogin, onRegister, onQuickAccess }) {
     crm: "CRM-SP 123456",
   });
 
-  const submitLogin = (e) => {
+  const submitLogin = async (e) => {
     e.preventDefault();
-    const result = onLogin(loginData);
-    setFeedback(result.message);
+    const result = await onLogin(loginData);
+    setFeedback(result?.message || "Não foi possível concluir o acesso.");
   };
 
-  const submitPatientRegister = (e) => {
+  const submitPatientRegister = async (e) => {
     e.preventDefault();
-    const result = onRegister({ ...patientRegisterData, role: "patient" });
-    setFeedback(result.message);
+    const result = await onRegister({
+      ...patientRegisterData,
+      role: "patient",
+    });
+    setFeedback(result?.message || "Não foi possível concluir o cadastro.");
   };
 
-  const submitDoctorRegister = (e) => {
+  const submitDoctorRegister = async (e) => {
     e.preventDefault();
-    const result = onRegister({ ...doctorRegisterData, role: "admin" });
-    setFeedback(result.message);
+    const result = await onRegister({ ...doctorRegisterData, role: "admin" });
+    setFeedback(result?.message || "Não foi possível concluir o cadastro.");
   };
 
   return (

@@ -5,6 +5,13 @@ import CardioPage from "./pages/CardioPage";
 import NeuralPage from "./pages/NeuralPage";
 import AuthPage from "./pages/AuthPage";
 import {
+  buildDemoUser,
+  registerWithAppAuth,
+  restoreAppSession,
+  signInWithAppAuth,
+  signOutAppAuth,
+} from "./services/auth";
+import {
   ClientesPage,
   RiscoPage,
   HistoricoPage,
@@ -245,6 +252,30 @@ export default function App() {
   }, []);
 
   useEffect(() => {
+    let mounted = true;
+
+    restoreAppSession().then(({ user }) => {
+      if (!mounted || !user) return;
+      setCurrentUser(user);
+      setUsers((prev) => {
+        const existing = prev.some(
+          (entry) =>
+            String(entry.email || "").toLowerCase() ===
+            String(user.email || "").toLowerCase(),
+        );
+        if (existing) return prev;
+        return [...prev, user];
+      });
+      if (user.role === "admin") setSelectedPatientId(null);
+      setPage(user.role === "admin" ? "clientes" : "dashboard");
+    });
+
+    return () => {
+      mounted = false;
+    };
+  }, []);
+
+  useEffect(() => {
     localStorage.setItem(PATIENTS_STORAGE_KEY, JSON.stringify(patients));
   }, [patients]);
 
@@ -310,7 +341,23 @@ export default function App() {
 
   const { title, subtitle } = PAGE_TITLES[page] || PAGE_TITLES.dashboard;
 
-  const handleSiteLogin = ({ email, password }) => {
+  const handleSiteLogin = async ({ email, password }) => {
+    const supabaseResult = await signInWithAppAuth({ email, password });
+    if (supabaseResult.ok && supabaseResult.user) {
+      setCurrentUser(supabaseResult.user);
+      setUsers((prev) => {
+        const existing = prev.some(
+          (entry) =>
+            String(entry.email || "").toLowerCase() ===
+            String(supabaseResult.user.email || "").toLowerCase(),
+        );
+        return existing ? prev : [...prev, supabaseResult.user];
+      });
+      if (supabaseResult.user.role === "admin") setSelectedPatientId(null);
+      setPage(supabaseResult.user.role === "admin" ? "clientes" : "dashboard");
+      return supabaseResult;
+    }
+
     const normalizedEmail = String(email || "")
       .trim()
       .toLowerCase();
@@ -324,7 +371,9 @@ export default function App() {
     if (!user) {
       return {
         ok: false,
-        message: "Credenciais inválidas. Verifique e tente novamente.",
+        message:
+          supabaseResult.message ||
+          "Credenciais inválidas. Verifique e tente novamente.",
       };
     }
 
@@ -337,7 +386,30 @@ export default function App() {
     };
   };
 
-  const handleSiteRegister = ({ name, email, password, role, crm }) => {
+  const handleSiteRegister = async ({ name, email, password, role, crm }) => {
+    const supabaseResult = await registerWithAppAuth({
+      name,
+      email,
+      password,
+      role,
+      crm,
+    });
+
+    if (supabaseResult.ok && supabaseResult.user) {
+      setCurrentUser(supabaseResult.user);
+      setUsers((prev) => {
+        const existing = prev.some(
+          (entry) =>
+            String(entry.email || "").toLowerCase() ===
+            String(supabaseResult.user.email || "").toLowerCase(),
+        );
+        return existing ? prev : [...prev, supabaseResult.user];
+      });
+      if (supabaseResult.user.role === "admin") setSelectedPatientId(null);
+      setPage(supabaseResult.user.role === "admin" ? "clientes" : "dashboard");
+      return supabaseResult;
+    }
+
     const normalizedName = String(name || "").trim();
     const normalizedEmail = String(email || "")
       .trim()
@@ -346,11 +418,19 @@ export default function App() {
     const normalizedCrm = String(crm || "").trim();
 
     if (!normalizedName || !normalizedEmail || !normalizedPassword || !role) {
-      return { ok: false, message: "Preencha todos os campos para cadastrar." };
+      return {
+        ok: false,
+        message:
+          supabaseResult.message || "Preencha todos os campos para cadastrar.",
+      };
     }
 
     if (role === "admin" && !normalizedCrm) {
-      return { ok: false, message: "Informe o CRM para cadastro de médico." };
+      return {
+        ok: false,
+        message:
+          supabaseResult.message || "Informe o CRM para cadastro de médico.",
+      };
     }
 
     if (
@@ -381,14 +461,14 @@ export default function App() {
     return { ok: true, message: "Cadastro concluído com sucesso." };
   };
 
-  const handleLogout = () => {
+  const handleLogout = async () => {
+    await signOutAppAuth();
     setCurrentUser(null);
     setPage("dashboard");
   };
 
   const handleQuickAccess = () => {
-    const quickUser =
-      users.find((entry) => entry.role === "admin") || users[0] || null;
+    const quickUser = buildDemoUser("admin");
     if (!quickUser) return;
     setCurrentUser(quickUser);
     if (quickUser.role === "admin") setSelectedPatientId(null);
